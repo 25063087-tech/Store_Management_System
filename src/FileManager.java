@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class FileManager {
+    public static String[][] stocks;
     static ArrayList <String[]> employee_list = new ArrayList<>();
     static ArrayList <String[]> models = new ArrayList<>();
     static ArrayList <String[]> attendance = new ArrayList<>();

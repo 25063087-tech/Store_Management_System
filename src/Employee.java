@@ -113,13 +113,94 @@ public class Employee {
             System.out.println("You have not clocked in yet");
         }
     }
-
     public void sales_record() {
-        System.out.println("record sales");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("=== Record New Sale ===");
+        LocalDate date = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+        String formattedTime = now.format(formatter);
+
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + formattedTime);
+
+        System.out.print("Customer Name: ");
+        String customer = sc.nextLine();
+
+
+        System.out.print("Enter Model: ");
+        String model = sc.nextLine();
+        System.out.print("Enter Quantity: ");
+        int qty = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Unit Price: RM");
+        double price = sc.nextDouble();
+        sc.nextLine();
+
+        double total = qty * price;
+
+        System.out.print("Enter transaction method (Cash/Card/E-wallet): ");
+        String method = sc.nextLine();
+
+        System.out.println("Subtotal: RM" + total);
+        System.out.println("Transaction successful.");
+        System.out.println("Sale recorded successfully.");
+        System.out.println("Model quantities updated successfully.");
+
+        String[] sale = new String[8];
+        sale[0] = this.id;
+        sale[1] = this.name;
+        sale[3] = model;
+        sale[4] = String.valueOf(qty);
+        sale[5] = String.valueOf(price);
+        sale[6] = String.valueOf(total);
+        sale[7] = method;
+        FileManager.sales_history.add(sale);
     }
 
     public void search_item() {
-        System.out.println("search item");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("=== Search Stock Information ===");
+        System.out.print("Enter Model Name: ");
+        String model = sc.nextLine();
+
+        boolean found = false;
+        for (String[] stock : FileManager.stocks) {
+            if (stock[0].equalsIgnoreCase(model)) {
+                System.out.println("Model: " + stock[0]);
+                System.out.println("Unit Price: RM" + stock[1]);
+                System.out.println("Stock Available: " + stock[2]);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No record found for model: " + model);
+        }
+
+        System.out.println("=== Search Sales Information ===");
+        System.out.print("Enter Customer Name: ");
+        String customer = sc.nextLine();
+
+        boolean saleFound = false;
+        for (String[] sale : FileManager.sales_history) {
+            if (sale[2].equalsIgnoreCase(customer)) {
+                System.out.println("Date: " + LocalDate.now());
+                System.out.println("Customer: " + sale[2]);
+                System.out.println("Item: " + sale[3]);
+                System.out.println("Quantity: " + sale[4]);
+                System.out.println("Total: RM" + sale[6]);
+                System.out.println("Transaction Method: " + sale[7]);
+                System.out.println("Employee: " + sale[1]);
+                saleFound = true;
+            }
+        }
+
+        if (!saleFound) {
+            System.out.println("No sales record found for customer: " + customer);
+        }
     }
 
     public void morning_stock_count() {
