@@ -1,13 +1,18 @@
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
+import java.time.*;
 public class Employee {
+    String[] attendance = new String[7];
     String name = "";
     String id = "";
     String password = "";
     String outlet_id = "";
     String role = "";
     String job_type = "";
-
+    Instant start;
+    Instant end;
+    Duration duration;
+    Boolean clock_in = false;
     public Employee(String[] a) {
         this.name = a[0];
         this.password = a[1];
@@ -32,6 +37,7 @@ public class Employee {
             switch (option) {
                 case 0:
                     System.out.println("Logging Out.....");
+                    FileManager.Data_Saver();
                     return;
                 case 1:
                     clock_in();
@@ -57,11 +63,55 @@ public class Employee {
     }
 
     public void clock_in() {
-        System.out.println("clock in");
+        start = Instant.now();
+        LocalDate date = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+        String formattedTime = now.format(formatter);
+        System.out.println("=== Attendance Clock In ===");
+        System.out.println("Employee ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Outlet: " + outlet_id);
+        System.out.println("");
+        System.out.println("Clock in successful!");
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + formattedTime);
+        attendance[0] = this.id;
+        attendance[1] = this.name;
+        attendance[2] = String.valueOf(date);
+        attendance[3] = formattedTime;
+        attendance[5] = this.outlet_id;
+        clock_in = true;
     }
 
     public void clock_out() {
-        System.out.println("clock out");
+        if(clock_in) {
+            System.out.println("=== Attendance Clock Out ===");
+            end = Instant.now();
+            duration = Duration.between(start, end);
+            long dur = duration.getSeconds();
+            double hours = dur / 3600.0;
+            String formattedHours = String.format("%.1f", hours);
+            LocalTime now = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+            String formattedTime = now.format(formatter);
+            attendance[4] = formattedTime;
+            attendance[6] = formattedHours;
+            System.out.println("=== Attendance Clock Out ===");
+            System.out.println("Employee ID: " + id);
+            System.out.println("Name: " + name);
+            System.out.println("Outlet: " + outlet_id);
+            System.out.println("");
+            System.out.println("Clock in successful!");
+            System.out.println("Date: " + attendance[2]);
+            System.out.println("Time: " + formattedTime);
+            System.out.println("Total Hours Worked: " + formattedHours);
+            clock_in = false;
+            FileManager.attendance.add(attendance);
+        }
+        else{
+            System.out.println("You have not clocked in yet");
+        }
     }
 
     public void sales_record() {
