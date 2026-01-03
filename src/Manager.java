@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.*;
 public class Manager extends Employee {
     public Manager(String[] a){
@@ -13,6 +14,7 @@ public class Manager extends Employee {
             System.out.println("4. Search Item");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
+            System.out.println("=== Manager Options ===");
             System.out.println("7. Register New Staff");
             System.out.println("8. View Performance Metrics");
             Scanner sc = new Scanner(System.in);
@@ -20,6 +22,7 @@ public class Manager extends Employee {
             switch (option) {
                 case 0:
                     System.out.println("Logging Out.....");
+                    FileManager.Data_Saver();
                     return;
                 case 1:
                     clock_in();
@@ -50,7 +53,21 @@ public class Manager extends Employee {
     }
 
     public void register_new_staff(){
-        System.out.println("rns");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("=== Register New Employee ===");
+        System.out.print("Enter Employee Name: ");
+        String new_name = sc.nextLine();
+        System.out.print("Enter Employee ID: ");
+        String new_id = sc.nextLine();
+        System.out.print("Set Password: ");
+        String new_password = sc.nextLine();
+        System.out.print("Set Role: ");
+        String new_job_type = sc.nextLine();
+        String new_role = "Employee";
+        String new_outlet_id = this.outlet_id;
+        String[] new_employee = {new_name, new_password, new_id, new_role, new_job_type, new_outlet_id};
+        System.out.println("Employee Registered Successfully!");
+        FileManager.employee_list.add(new_employee);
     }
 
     public void view_performance(){
