@@ -49,7 +49,7 @@ public class EditInformation {
         String[] header = FileManager.models.get(0);
         String[] row = FileManager.models.get(foundIdx);
 
-        // Try to find outlet-specific column using employee.outlet_id
+        
         int outletCol = -1;
         if (user != null && user.outlet_id != null && header != null) {
             for (int i = 0; i < header.length; i++) {
@@ -75,7 +75,6 @@ public class EditInformation {
             return;
         }
 
-        // If outlet column not found, list columns and let user pick
         System.out.println("Editing model: " + row[0]);
         for (int i = 0; i < row.length; i++) {
             String colName = (header != null && header.length > i) ? header[i] : ("col" + i);
@@ -115,7 +114,7 @@ public class EditInformation {
         String customer = sc.nextLine().trim();
 
         String[] header = FileManager.sales_history.get(0);
-        // Find column indexes by header names (best-effort)
+
         int dateCol = findColumnIndex(header, new String[]{"date", "transaction_date", "transactiondate"});
         int custCol = findColumnIndex(header, new String[]{"customer", "name", "customer_name"});
         int modelCol = findColumnIndex(header, new String[]{"model", "model_name"});
@@ -123,7 +122,6 @@ public class EditInformation {
         int totalCol = findColumnIndex(header, new String[]{"total", "amount", "total_price"});
         int methodCol = findColumnIndex(header, new String[]{"transaction_method", "method", "payment_method"});
 
-        // Fallback to conventional indices if headers not present
         if (dateCol == -1) dateCol = 0;
         if (custCol == -1) custCol = 1;
         if (modelCol == -1) modelCol = 2;
