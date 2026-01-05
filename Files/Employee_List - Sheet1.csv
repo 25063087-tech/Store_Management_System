@@ -1,7 +1,9 @@
 Name,Password,Id,Role,Job_Type,Outet_Id
-Adib,c1d2,2001,Manager,Full-Time,KL_Gateway
+Adib,c1d2,2001,Manager,Full-Time,KLCC
 Humam,a1b2,1001,Employee,Full-Time,KLCC
 Brandon,e1f2,1002,Employee,Part-time,KL_Gateway
 Matt,h1z2,1003,Employee,Part-time,KL_Gateway
 Zack,p1q2,1004,Employee,Full-time,KL_Gateway
 James,x1y2,1005,Employee,Full-time,KL_Gateway
+Alex,a1s2,1006,Employee,Part-time,KL_Gateway
+Jeff Chudirbhai,6969,1009,Employee,Part-time,KL_Gateway
