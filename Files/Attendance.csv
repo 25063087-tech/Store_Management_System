@@ -3,3 +3,5 @@ Id,name,date,clock_in,clock_out,Outlet_Id,total_hours
 1001,Humam,2026-01-03,8:43 AM,8:43 AM,KLCC,0.0
 1003,Matt,2026-01-03,9:13 AM,9:13 AM,KL_Gateway,0.0
 1005,James,2026-01-03,9:16 AM,9:16 AM,KL_Gateway,0.0
+2001,Adib,2026-01-03,11:19 PM,11:19 PM,KL_Gateway,0.0
+2001,Adib,2026-01-05,10:30 AM,10:30 AM,KL_Gateway,0.0

@@ -1,1 +1,6 @@
-model_name,unit_price,KLCC,MidValley,Lalaport,NuSentral,PavilionKL,MyTown,KLEast
+Date,Time,Employee_ID,Employee_Name,Customer_Name,Model_Name,Quantity,Unit_Price,Total_Price,Transaction_Method
+2025-10-13,02:50 p.m.,C6001,Tan Guan Han,Zikri bin Abdullah,SW2500-1,1,845,845,Credit card
+2025-10-13,03:15 p.m.,C6001,Tan Guan Han,Siti Aminah,DW2300-4,2,349,698,E-wallet
+2025-10-14,11:00 a.m.,C6013,Siti Ros binti Rossi,John Doe,DW2400-2,1,550,550,Cash
+2025-10-14,01:30 p.m.,C6001,Tan Guan Han,Michael Wong,SW2500-1,1,845,845,Debit card
+2025-10-15,05:45 p.m.,C6013,Siti Ros binti Rossi,Sarah Jenkins,DW2300-3,1,420,420,Credit card
