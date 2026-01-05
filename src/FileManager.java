@@ -2,7 +2,6 @@ import java.util.*;
 import java.io.*;
 
 public class FileManager {
-    public static String[][] stocks;
     static ArrayList <String[]> employee_list = new ArrayList<>();
     static ArrayList <String[]> models = new ArrayList<>();
     static ArrayList <String[]> attendance = new ArrayList<>();
@@ -11,6 +10,8 @@ public class FileManager {
     static String Employee_path = "Files/Employee_List - Sheet1.csv";
     static String model_path = "Files/Model.csv";
     static String sale_history = "Files/sales_history.csv";
+
+    public static boolean modelDataModified = false;
 
     public FileManager(){
         try(BufferedReader br = new BufferedReader(new FileReader(Employee_path))){
@@ -93,4 +94,3 @@ public class FileManager {
         }
     }
 }
-
