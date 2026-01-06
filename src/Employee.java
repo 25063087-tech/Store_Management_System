@@ -13,6 +13,7 @@ public class Employee {
     Instant end;
     Duration duration;
     Boolean clock_in = false;
+    String branch = "";
     public Employee(String[] a) {
         this.name = a[0];
         this.password = a[1];
@@ -20,6 +21,7 @@ public class Employee {
         this.role = a[3];
         this.job_type = a[4];
         this.outlet_id = a[5];
+        this.branch = a[5];
     }
 
     public void show_menu() {
@@ -317,10 +319,134 @@ public class Employee {
         }
     }
     public void morning_stock_count() {
-        System.out.println("msc");
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        DateTimeFormatter timeFormatter =
+                DateTimeFormatter.ofPattern("hh:mm a");
+
+
+        System.out.println("=== Morning Stock Count ===");
+        System.out.println("Date: " + now.format(dateFormatter));
+        System.out.println("Time: " + now.format(timeFormatter).toLowerCase());
+        runStockCount("Morning");
     }
 
     public void night_stock_count() {
-        System.out.println("nsc");
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        DateTimeFormatter timeFormatter =
+                DateTimeFormatter.ofPattern("hh:mm a");
+
+
+        System.out.println("=== Night Stock Count ===");
+        System.out.println("Date: " + now.format(dateFormatter));
+        System.out.println("Time: " + now.format(timeFormatter).toLowerCase());
+        runStockCount("Night");
+
     }
+
+    private void runStockCount(String shift) {
+
+
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        DateTimeFormatter timeFormatter =
+                DateTimeFormatter.ofPattern("hh:mm a");
+
+
+
+
+        Scanner sc = new Scanner(System.in);
+
+        if (this.branch == null) {
+            System.out.println("Error: Employee branch not set.");
+            return;
+        }
+
+        String branchName = this.outlet_id;
+
+        int totalModels = 0;
+        int correctTally = 0;
+        int mismatches = 0;
+
+        int stockColumn;
+
+        switch (branchName) {
+            case "KLCC": stockColumn = 2; break;
+            case "MidValley": stockColumn = 3; break;
+            case "Lalaport": stockColumn = 4; break;
+            case "Nu Sentral": stockColumn = 5; break;
+            case "Pavilion KL": stockColumn = 6; break;
+            case "MyTown": stockColumn = 7; break;
+            case "KL East": stockColumn = 8; break;
+            default:
+                System.out.println("Invalid branch.");
+                return;
+        }
+
+        for (int i = 1; i < FileManager.models.size(); i++) {
+
+            String[] item = FileManager.models.get(i);
+
+            String modelName = item[0];
+            int storeRecord = Integer.parseInt(item[stockColumn]);
+
+            System.out.print("Model: " + modelName + " - Counted: ");
+            int counted = sc.nextInt();
+
+            System.out.println("Store Record: " + storeRecord);
+
+            totalModels++;
+
+            if (counted == storeRecord) {
+                System.out.println("Stock tally correct.");
+                correctTally++;
+            } else {
+                int diff = Math.abs(counted - storeRecord);
+                System.out.println("! Mismatch detected (" + diff + " unit difference)");
+                mismatches++;
+            }
+
+            System.out.println();
+        }
+
+        displaySummary(shift, totalModels, correctTally, mismatches);
+    }
+
+    private void displaySummary(
+            String shift,
+            int totalModels,
+            int correctTally,
+            int mismatches
+    ) {
+        System.out.println("=== " + shift + " Stock Summary ===");
+        System.out.println("Total Models Checked: " + totalModels);
+        System.out.println("Tally Correct: " + correctTally);
+        System.out.println("Mismatches: " + mismatches);
+
+        if (mismatches > 0) {
+            if (shift.equalsIgnoreCase("Night")) {
+                System.out.println("Warning: Please verify stock before closing.");
+            } else {
+                System.out.println("Warning: Please verify stock.");
+            }
+        }
+
+        System.out.println(shift + " stock count completed.");
+    }
+
+    public Employee(String name, String branch) {
+        this.name = name;
+        this.branch = branch;
+    }
+
 }

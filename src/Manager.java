@@ -70,8 +70,61 @@ public class Manager extends Employee {
         FileManager.employee_list.add(new_employee);
     }
 
-    public void view_performance(){
-        System.out.println("view performance");
-    }
+    public void view_performance() {
+        System.out.println("\n=== Employee Performance Metrics ===");
 
+
+        Map<String, Double> totalSales = new HashMap<>();
+        Map<String, Integer> transactions = new HashMap<>();
+
+
+        for (int i = 1; i < FileManager.employee_list.size(); i++) {
+
+            String[] emp = FileManager.employee_list.get(i);
+            String employeeName = emp[0];
+
+            totalSales.put(employeeName, 0.0);
+            transactions.put(employeeName, 0);
+        }
+
+
+        for (int i = 1; i < FileManager.sales_history.size(); i++) {
+
+            String[] sale = FileManager.sales_history.get(i);
+
+            String employeeName = sale[3];
+            double totalPrice = Double.parseDouble(sale[8]);
+
+            totalSales.put(
+                    employeeName,
+                    totalSales.getOrDefault(employeeName, 0.0) + totalPrice
+            );
+
+            transactions.put(
+                    employeeName,
+                    transactions.getOrDefault(employeeName, 0) + 1
+            );
+        }
+
+
+        List<Map.Entry<String, Double>> ranking =
+                new ArrayList<>(totalSales.entrySet());
+
+        ranking.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+
+
+        System.out.printf("%-25s %-15s %-15s%n",
+                "Employee Name", "Total Sales", "Transactions");
+        System.out.println("-------------------------------------------------------");
+
+        for (Map.Entry<String, Double> entry : ranking) {
+
+            String name = entry.getKey();
+            double sales = entry.getValue();
+            int count = transactions.get(name);
+
+            System.out.printf("%-25s %-15.2f %-15d%n",
+                    name, sales, count);
+        }
+    }
 }
