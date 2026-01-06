@@ -115,15 +115,209 @@ public class Employee {
             System.out.println("You have not clocked in yet");
         }
     }
-
     public void sales_record() {
-        System.out.println("record sales");
-    }
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("=== Record New Sale ===");
+
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mm a");
+        String time = LocalTime.now().format(tf);
+
+        System.out.print("Customer Name: ");
+        String customer = sc.nextLine();
+
+        String model = "";
+        double price = 0.0;
+        String[] foundModel = null;
+        int modelIndex = -1;
+
+        while (foundModel == null) {
+            System.out.print("Enter Model: ");
+            model = sc.nextLine().trim();
+
+            for (int i = 0; i < FileManager.models.size(); i++) {
+                String[] modelData = FileManager.models.get(i);
+                if (modelData.length > 0 && modelData[0].equalsIgnoreCase(model)) {
+                    foundModel = modelData;
+                    modelIndex = i;
+                    price = Double.parseDouble(modelData[1]); // 自动从库存获取价格
+                    System.out.println("Model found! Unit Price: RM " + price);
+                    break;
+                }
+            }
+
+            if (foundModel == null) {
+                System.out.println("Error: Model \"" + model + "\" not found in stock records.");
+                System.out.println("Please enter a valid model name or type 'cancel' to return to menu.");
+
+                String response = sc.nextLine();
+                if (response.equalsIgnoreCase("cancel")) {
+                    System.out.println("Sale recording cancelled.");
+                    return;
+                }
+            }
+        }
+
+        System.out.println("\n=== Stock Information for " + model + " ===");
+        System.out.println("Unit Price: RM " + price);
+        System.out.println("Stock by Outlet:");
+        System.out.println("1. KLCC: " + foundModel[2] + " units");
+        System.out.println("2. MidValley: " + foundModel[3] + " units");
+        System.out.println("3. Lalaport: " + foundModel[4] + " units");
+        System.out.println("4. Nu Sentral: " + foundModel[5] + " units");
+        System.out.println("5. Pavilion KL: " + foundModel[6] + " units");
+        System.out.println("6. MyTown: " + foundModel[7] + " units");
+        System.out.println("7. KL East: " + foundModel[8] + " units");
+
+        int outletChoice = 0;
+        int outletStockIndex = 0;
+        String selectedOutlet = "";
+
+        while (outletChoice < 1 || outletChoice > 7) {
+            System.out.print("\nSelect outlet (1-7): ");
+            try {
+                outletChoice = sc.nextInt();
+                sc.nextLine();
+
+                if (outletChoice < 1 || outletChoice > 7) {
+                    System.out.println("Invalid selection. Please enter a number between 1 and 7.");
+                } else {
+
+                    switch(outletChoice) {
+                        case 1:
+                            outletStockIndex = 2;
+                            selectedOutlet = "KLCC";
+                            break;
+                        case 2:
+                            outletStockIndex = 3;
+                            selectedOutlet = "MidValley";
+                            break;
+                        case 3:
+                            outletStockIndex = 4;
+                            selectedOutlet = "Lalaport";
+                            break;
+                        case 4:
+                            outletStockIndex = 5;
+                            selectedOutlet = "Nu Sentral";
+                            break;
+                        case 5:
+                            outletStockIndex = 6;
+                            selectedOutlet = "Pavilion KL";
+                            break;
+                        case 6:
+                            outletStockIndex = 7;
+                            selectedOutlet = "MyTown";
+                            break;
+                        case 7:
+                            outletStockIndex = 8;
+                            selectedOutlet = "KL East";
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 7.");
+                sc.nextLine();
+            }
+        }
+
+        int currentStock = Integer.parseInt(foundModel[outletStockIndex]);
+        System.out.println("Current stock at " + selectedOutlet + ": " + currentStock + " units");
+
+        int qty = 0;
+        while (qty <= 0 || qty > currentStock) {
+            System.out.print("Enter Quantity: ");
+            try {
+                qty = sc.nextInt();
+                sc.nextLine();
+
+                if (qty <= 0) {
+                    System.out.println("Quantity must be greater than 0.");
+                } else if (qty > currentStock) {
+                    System.out.println("Error: Insufficient stock! Only " + currentStock + " units available at " + selectedOutlet);
+                    System.out.println("Please enter a smaller quantity or type '0' to cancel.");
+
+                    if (qty == 0) {
+                        System.out.println("Sale recording cancelled.");
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.nextLine();
+            }
+        }
+
+        int newStock = currentStock - qty;
+        foundModel[outletStockIndex] = String.valueOf(newStock);
+
+        FileManager.models.set(modelIndex, foundModel);
+
+        FileManager.modelDataModified = true;
+
+        System.out.print("Transaction Method (Cash/Card/E-wallet): ");
+        String method = sc.nextLine();
+
+        double total = qty * price;
+
+        String[] sale = new String[10];
+        sale[0] = date.toString();
+        sale[1] = time;
+        sale[2] = this.id;
+        sale[3] = this.name;
+        sale[4] = customer;
+        sale[5] = model;
+        sale[6] = String.valueOf(qty);
+        sale[7] = String.valueOf(price);
+        sale[8] = String.valueOf(total);
+        sale[9] = method;
+
+        FileManager.sales_history.add(sale);
+
+        System.out.println("\n=== Sale Summary ===");
+        System.out.println("Customer: " + customer);
+        System.out.println("Model: " + model);
+        System.out.println("Quantity: " + qty);
+        System.out.println("Unit Price: RM " + price);
+        System.out.println("Total: RM " + total);
+        System.out.println("Payment Method: " + method);
+        System.out.println("Outlet: " + selectedOutlet);
+        System.out.println("Stock updated: " + currentStock + " -> " + newStock);
+        System.out.println("Sale recorded successfully.");
+    }
     public void search_item() {
-        System.out.println("search item");
-    }
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("=== Search Stock Information ===");
+        System.out.print("Search Model Name: ");
+        String searchModel = sc.nextLine().trim();
+
+        System.out.println("Searching...");
+
+        boolean found = false;
+
+        for (String[] stock : FileManager.models) {
+            if (stock.length > 0 && stock[0].equalsIgnoreCase(searchModel)) {
+                System.out.println("Model: " + stock[0]);
+                System.out.println("Unit Price: RM " + stock[1]);
+                System.out.println("Stock by Outlet:");
+                System.out.print("KLCC: " + stock[2] + " ");
+                System.out.print("MidValley: " + stock[3] + " ");
+                System.out.print("Lalaport: " + stock[4] + " ");
+                System.out.print("Nu Sentral: " + stock[5] + " ");
+                System.out.print("Pavilion KL: " + stock[6] + " ");
+                System.out.print("MyTown: " + stock[7] + " ");
+                System.out.print("KL East: " + stock[8]);
+                System.out.println();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Error: Model \"" + searchModel + "\" not found in stock records.");
+        }
+    }
     public void morning_stock_count() {
         LocalDateTime now = LocalDateTime.now();
 
