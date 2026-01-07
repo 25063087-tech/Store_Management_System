@@ -11,6 +11,8 @@ public class FileManager {
     static String model_path = "Files/Model.csv";
     static String sale_history = "Files/sales_history.csv";
 
+    public static boolean modelDataModified = false;
+
     public FileManager(){
         try(BufferedReader br = new BufferedReader(new FileReader(Employee_path))){
             String line = "";
@@ -92,4 +94,3 @@ public class FileManager {
         }
     }
 }
-
