@@ -34,8 +34,10 @@ public class Employee {
             System.out.println("4. Search Item");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
+            System.out.println("7. Edit Stock Info");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
+            sc.nextLine(); // consume newline
             switch (option) {
                 case 0:
                     System.out.println("Logging Out.....");
@@ -59,6 +61,9 @@ public class Employee {
                 case 6:
                     night_stock_count();
                     break;
+                case 7:
+                    EditInformation.showMenu(this);
+                    break; 
             }
         }
 
