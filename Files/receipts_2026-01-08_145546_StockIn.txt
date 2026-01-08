@@ -1,0 +1,11 @@
+=== Stock In ===
+Date: 2026-01-08
+Time: 02:55 PM
+From: KLCC
+To: MidValley
+Employee: Adib
+Models:
+- DW2300-2 (Quantity: 1)
+- DW2300-3 (Quantity: 2)
+Total Quantity: 3
+--------------------------------

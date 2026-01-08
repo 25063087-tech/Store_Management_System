@@ -1,0 +1,11 @@
+=== Stock In ===
+Date: 2026-01-08
+Time: 12:45 PM
+From: KLCC
+To: PavilionKL
+Employee: Yughen
+Models:
+- SW2500-1 (Quantity: 2)
+- DW2400-2 (Quantity: 3)
+Total Quantity: 5
+--------------------------------

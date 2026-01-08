@@ -14,9 +14,10 @@ public class Manager extends Employee {
             System.out.println("4. Search Item");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
+            System.out.println("7. Stock In / Stock Out");
             System.out.println("=== Manager Options ===");
-            System.out.println("7. Register New Staff");
-            System.out.println("8. View Performance Metrics");
+            System.out.println("8. Register New Staff");
+            System.out.println("9. View Performance Metrics");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
             switch (option) {
@@ -43,9 +44,12 @@ public class Manager extends Employee {
                     night_stock_count();
                     break;
                 case 7:
-                    register_new_staff();
+                    stock_in_out_menu();
                     break;
                 case 8:
+                    register_new_staff();
+                    break;
+                case 9:
                     view_performance();
                     break;
             }
