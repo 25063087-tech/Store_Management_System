@@ -20,6 +20,7 @@ public class Manager extends Employee {
             System.out.println("=== Manager Options ===");
             System.out.println("9. Register New Staff");
             System.out.println("10. View Performance Metrics");
+            System.out.println("11. Data Analytics");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
             sc.nextLine();
@@ -58,7 +59,7 @@ public class Manager extends Employee {
                 case 10:
                     view_performance();
                     break;
-                case 10:
+                case 11:
                     data_analytics();
                     break;
             }
