@@ -293,34 +293,80 @@ public class Employee {
     public void search_item() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== Search Stock Information ===");
-        System.out.print("Search Model Name: ");
-        String searchModel = sc.nextLine().trim();
+        System.out.println("=== Search Options ===");
+        System.out.println("1. Search Stock Information");
+        System.out.println("2. Search Sales Information");
+        System.out.print("Choose option (1 or 2): ");
+        int option = sc.nextInt();
+        sc.nextLine();
 
-        System.out.println("Searching...");
+        if (option == 1) {
+            System.out.print("Search Model Name: ");
+            String searchModel = sc.nextLine();
+            System.out.println("Searching...");
 
-        boolean found = false;
-
-        for (String[] stock : FileManager.models) {
-            if (stock.length > 0 && stock[0].equalsIgnoreCase(searchModel)) {
-                System.out.println("Model: " + stock[0]);
-                System.out.println("Unit Price: RM " + stock[1]);
-                System.out.println("Stock by Outlet:");
-                System.out.print("KLCC: " + stock[2] + " ");
-                System.out.print("MidValley: " + stock[3] + " ");
-                System.out.print("Lalaport: " + stock[4] + " ");
-                System.out.print("Nu Sentral: " + stock[5] + " ");
-                System.out.print("Pavilion KL: " + stock[6] + " ");
-                System.out.print("MyTown: " + stock[7] + " ");
-                System.out.print("KL East: " + stock[8]);
-                System.out.println();
-                found = true;
-                break;
+            boolean found = false;
+            for (String[] stock : FileManager.models) {
+                if (stock.length > 0 && stock[0].equalsIgnoreCase(searchModel)) {
+                    System.out.println("Model: " + stock[0]);
+                    System.out.println("Unit Price: RM" + stock[1]);
+                    System.out.println("Stock Available: " + stock[2]);
+                    found = true;
+                    break;
+                }
             }
-        }
 
-        if (!found) {
-            System.out.println("Error: Model \"" + searchModel + "\" not found in stock records.");
+            if (!found) {
+                System.out.println("Error: Model \"" + searchModel + "\" not found in stock records.");
+            }
+
+        } else if (option == 2) {
+            System.out.println("=== Search Sales Information ===");
+            System.out.print("Search keyword (date, customer name, or model name): ");
+            String keyword = sc.nextLine();
+            System.out.println("Searching...");
+
+            int recordsFound = 0;
+
+            for (String[] sale : FileManager.sales_history) {
+                if (sale.length < 10 || sale[0].equals("Date")) {
+                    continue;
+                }
+
+                String date = sale[0].trim();
+                String time = sale[1].trim();
+                String customerName = sale[4].trim();
+                String modelName = sale[5].trim();
+                String quantity = sale[6].trim();
+                String total = sale[8].trim();
+                String transactionMethod = sale[9].trim();
+                String employeeName = sale[3].trim();
+
+                if (date.contains(keyword) ||
+                        customerName.contains(keyword) ||
+                        modelName.contains(keyword)) {
+
+                    System.out.println("Sales Record Found:");
+                    System.out.println("Date: " + date + " Time: " + time);
+                    System.out.println("Customer: " + customerName);
+                    System.out.println("Item(s): " + modelName + " Quantity: " + quantity);
+                    System.out.println("Total: RM" + total);
+                    System.out.println("Transaction Method: " + transactionMethod);
+                    System.out.println("Employee: " + employeeName);
+                    System.out.println("Status: Transaction verified.");
+                    System.out.println();
+                    recordsFound++;
+                }
+            }
+
+            if (recordsFound > 0) {
+                System.out.println("Total records found: " + recordsFound);
+            } else {
+                System.out.println("No sales record found for keyword: " + keyword);
+            }
+
+        } else {
+            System.out.println("Invalid option!");
         }
     }
 
