@@ -116,7 +116,7 @@ public class EditInformation {
         String[] header = FileManager.sales_history.get(0);
 
         int dateCol = findColumnIndex(header, new String[]{"date", "transaction_date", "transactiondate"});
-        int custCol = findColumnIndex(header, new String[]{"customer", "name", "customer_name"});
+        int custCol = findColumnIndex(header, new String[]{"customer_name", "customer", "cust_name"});
         int modelCol = findColumnIndex(header, new String[]{"model", "model_name"});
         int qtyCol = findColumnIndex(header, new String[]{"quantity", "qty"});
         int totalCol = findColumnIndex(header, new String[]{"total", "amount", "total_price"});

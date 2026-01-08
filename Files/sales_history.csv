@@ -4,11 +4,11 @@ Date,Time,Employee_ID,Employee_Name,Customer_Name,Model_Name,Quantity,Unit_Price
 2025-10-14,11:00 a.m.,C6013,Siti Ros binti Rossi,John Doe,DW2400-2,1,550,550,Cash
 2025-10-14,01:30 p.m.,C6001,Tan Guan Han,Michael Wong,SW2500-1,1,845,845,Debit card
 2025-10-15,05:45 p.m.,C6013,Siti Ros binti Rossi,Sarah Jenkins,DW2300-3,1,420,420,Credit card
-2026-01-05,08:14 下午,2001,Abid,Adib,huawei,1,20000.0,20000.0,E-wallet
-2026-01-05,08:38 下午,2001,Adib,Adib,DW2300-1,1,200.0,200.0,E-wallet
-2026-01-05,08:42 下午,2001,Adib,tracy,2300-2,2,100.0,200.0,Cash
-2026-01-05,09:08 下午,2001,Adib,tracy,huawei,2,300.0,600.0,Cash
-2026-01-05,10:19 下午,2001,Adib,tracy,DW2300-1,2,333.0,666.0,Cash
-2026-01-05,10:19 下午,2001,Adib,tracy,DW2300-1,2,2222.0,4444.0,Cash
-2026-01-05,10:52 下午,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
-2026-01-08,12:32 PM,2001,Adib,Ditto,DW2300-1,3,500.0,1500.0,Cash
+2026-01-05,08:14 p.m.,2001,Abid,Adib,huawei,1,20000.0,20000.0,E-wallet
+2026-01-05,08:38 p.m.,2001,Adib,Adib,DW2300-1,1,200.0,200.0,E-wallet
+2026-01-05,08:42 p.m.,2001,Adib,tracy,2300-2,2,100.0,200.0,Cash
+2026-01-05,09:08 p.m.,2001,Adib,tracy,huawei,2,300.0,600.0,Cash
+2026-01-05,10:19 p.m.,2001,Adib,tracy,DW2300-1,2,333.0,666.0,Cash
+2026-01-05,10:52 p.m.,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
+2026-01-05,10:52 p.m.,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
+2026-01-08,12:32 p.m.,2001,Adib,Ditto,DW2300-1,3,500.0,1500.0,Cash

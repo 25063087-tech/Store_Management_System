@@ -35,6 +35,7 @@ public class Employee {
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
             System.out.println("7. Edit Stock Info");
+            System.out.println("8. Filter & Sort Sales History");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
             sc.nextLine(); // consume newline
@@ -63,6 +64,9 @@ public class Employee {
                     break;
                 case 7:
                     EditInformation.showMenu(this);
+                    break;
+                case 8:
+                    FilterandSortSalesHistory.showMenu();
                     break; 
             }
         }
