@@ -34,8 +34,10 @@ public class Employee {
             System.out.println("4. Search Item");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
+            System.out.println("7. Edit Stock Info");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
+            sc.nextLine(); // consume newline
             switch (option) {
                 case 0:
                     System.out.println("Logging Out.....");
@@ -59,6 +61,9 @@ public class Employee {
                 case 6:
                     night_stock_count();
                     break;
+                case 7:
+                    EditInformation.showMenu(this);
+                    break; 
             }
         }
 
@@ -115,6 +120,7 @@ public class Employee {
             System.out.println("You have not clocked in yet");
         }
     }
+
     public void sales_record() {
         Scanner sc = new Scanner(System.in);
 
@@ -271,9 +277,7 @@ public class Employee {
         sale[7] = String.valueOf(price);
         sale[8] = String.valueOf(total);
         sale[9] = method;
-
         FileManager.sales_history.add(sale);
-
         System.out.println("\n=== Sale Summary ===");
         System.out.println("Customer: " + customer);
         System.out.println("Model: " + model);
@@ -285,6 +289,7 @@ public class Employee {
         System.out.println("Stock updated: " + currentStock + " -> " + newStock);
         System.out.println("Sale recorded successfully.");
     }
+
     public void search_item() {
         Scanner sc = new Scanner(System.in);
 
@@ -318,6 +323,7 @@ public class Employee {
             System.out.println("Error: Model \"" + searchModel + "\" not found in stock records.");
         }
     }
+
     public void morning_stock_count() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -342,12 +348,22 @@ public class Employee {
 
         DateTimeFormatter timeFormatter =
                 DateTimeFormatter.ofPattern("hh:mm a");
-
-
+        String todayDate = now.format(dateFormatter);// new
         System.out.println("=== Night Stock Count ===");
         System.out.println("Date: " + now.format(dateFormatter));
         System.out.println("Time: " + now.format(timeFormatter).toLowerCase());
         runStockCount("Night");
+        System.out.println("\n[SYSTEM] Stock count finished. Initiating Auto-Email to HQ..."); // new
+        String reportFileName = FileManager.createDailyReportFile(todayDate);
+
+        if (reportFileName != null) { // new
+            String hqEmail = "25063087@siswa.um.edu.my";
+            EmailService.sendDailyReport(hqEmail, reportFileName, todayDate);
+
+            System.out.println("[SYSTEM] Closing sequence complete. You may log out.");
+        } else {
+            System.out.println("[ERROR] Could not generate report. Email was not sent.");
+        }
 
     }
 
@@ -427,7 +443,8 @@ public class Employee {
             int totalModels,
             int correctTally,
             int mismatches
-    ) {
+    )
+    {
         System.out.println("=== " + shift + " Stock Summary ===");
         System.out.println("Total Models Checked: " + totalModels);
         System.out.println("Tally Correct: " + correctTally);
@@ -444,9 +461,13 @@ public class Employee {
         System.out.println(shift + " stock count completed.");
     }
 
+
     public Employee(String name, String branch) {
         this.name = name;
         this.branch = branch;
     }
 
+
 }
+
+
