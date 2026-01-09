@@ -15,12 +15,13 @@ public class Manager extends Employee {
             System.out.println("4. Search Item");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
-            System.out.println("7. Edit Stock Info");
-            System.out.println("8. Filter & Sort Sales History");
+            System.out.println("7. Stock In / Stock Out");
+            System.out.println("8. Edit Stock Info");
+            System.out.println("9. Filter & Sort Sales History");
             System.out.println("=== Manager Options ===");
-            System.out.println("9. Register New Staff");
-            System.out.println("10. View Performance Metrics");
-            System.out.println("11. Data Analytics");
+            System.out.println("10. Register New Staff");
+            System.out.println("11. View Performance Metrics");
+            System.out.println("12. Data Analytics");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
             sc.nextLine();
@@ -48,18 +49,21 @@ public class Manager extends Employee {
                     night_stock_count();
                     break;
                 case 7:
-                    EditInformation.showMenu(this);
+                    stock_in_out_menu();
                     break;
                 case 8:
-                    FilterandSortSalesHistory.showMenu();
+                    EditInformation.showMenu(this);
                     break;
                 case 9:
-                    register_new_staff();
+                    FilterandSortSalesHistory.showMenu();
                     break;
                 case 10:
-                    view_performance();
+                    register_new_staff();
                     break;
                 case 11:
+                    view_performance();
+                    break;
+                case 12:
                     data_analytics();
                     break;
             }

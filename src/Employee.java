@@ -1,4 +1,10 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.time.*;
 public class Employee {
@@ -34,8 +40,9 @@ public class Employee {
             System.out.println("4. Search Item");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
-            System.out.println("7. Edit Stock Info");
-            System.out.println("8. Filter & Sort Sales History");
+            System.out.println("7. Stock In / Stock Out");
+            System.out.println("8. Edit Stock Info");
+            System.out.println("9. Filter & Sort Sales History");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
             sc.nextLine(); // consume newline
@@ -63,9 +70,12 @@ public class Employee {
                     night_stock_count();
                     break;
                 case 7:
-                    EditInformation.showMenu(this);
+                    stock_in_out_menu();
                     break;
                 case 8:
+                    EditInformation.showMenu(this);
+                    break;
+                case 9:
                     FilterandSortSalesHistory.showMenu();
                     break; 
             }
@@ -486,6 +496,223 @@ public class Employee {
         }
 
         displaySummary(shift, totalModels, correctTally, mismatches);
+    }
+
+    //Stock in / Stock out menu
+    public void stock_in_out_menu() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== Stock Movement ===");
+        System.out.println("1. Stock In");
+        System.out.println("2. Stock Out");
+        System.out.print("Choose option: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        if (choice == 1) {
+            processStockMovement(true);
+        } else if (choice == 2) {
+            processStockMovement(false);
+        } else {
+            System.out.println("Invalid option.");
+        }
+    }
+
+    //Process stock Movement
+    private void processStockMovement(boolean isStockIn) {
+        Scanner sc = new Scanner(System.in);
+
+        String from = selectOutlet(sc, "Select FROM outlet:");
+        String to = selectOutlet(sc, "Select TO outlet:");
+
+        System.out.print("How many different models? ");
+        int modelCount = sc.nextInt();
+        sc.nextLine();
+
+        List<String[]> movements = new ArrayList<>();
+
+        for (int i = 0; i < modelCount; i++) {
+
+            String model = selectModel(sc);
+
+            System.out.print("Quantity: ");
+            int qty = sc.nextInt();
+            sc.nextLine();
+
+            movements.add(new String[]{model, String.valueOf(qty)});
+        }
+
+        updateCSVStock(movements, from, to);
+
+        writeReceipt(isStockIn ? "Stock In" : "Stock Out", from, to, movements);
+
+        System.out.println("Stock movement recorded successfully.");
+    }
+
+
+    //Update CSV Stock (From & To)
+    private void updateCSVStock(List<String[]> movements, String from, String to) {
+
+        List<String> updatedLines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("Files/Model.csv"))) {
+
+            String header = br.readLine();
+            updatedLines.add(header);
+
+            String[] columns = header.split(",");
+
+            int fromIndex = getOutletColumnIndexByName(columns, from);
+            int toIndex   = getOutletColumnIndexByName(columns, to);
+
+            if (fromIndex == -1 || toIndex == -1) {
+                System.out.println("Error: Invalid outlet column.");
+                return;
+            }
+
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] data = line.split(",");
+
+                for (String[] m : movements) {
+                    if (data[0].equalsIgnoreCase(m[0])) {
+
+                        int qty = Integer.parseInt(m[1]);
+
+                        // subtract from FROM outlet
+                        int fromStock = Integer.parseInt(data[fromIndex]);
+                        data[fromIndex] = String.valueOf(fromStock - qty);
+
+                        // add to TO outlet
+                        int toStock = Integer.parseInt(data[toIndex]);
+                        data[toIndex] = String.valueOf(toStock + qty);
+                    }
+                }
+
+                updatedLines.add(String.join(",", data));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading Files/Model.csv");
+            return;
+        }
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter("Files/Model.csv"))) {
+            for (String l : updatedLines) {
+                pw.println(l);
+            }
+        } catch (Exception e) {
+            System.out.println("Error writing Files/Model.csv");
+        }
+    }
+
+    //Get CSV column index by outlet name
+    private int getOutletColumnIndexByName(String[] columns, String outlet) {
+
+        String columnName = outlet + "_Stock";
+
+        for (int i = 0; i < columns.length; i++) {
+            if (columns[i].equalsIgnoreCase(columnName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //write stockin&out receipt (one receipt per transaction)
+    private void writeReceipt(String type, String from, String to,
+                              List<String[]> movements) {
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        String timestamp = time.format(DateTimeFormatter.ofPattern("HHmmss"));
+        String safeType = type.replace(" ", "");
+
+        String fileName =
+                "Files/StockIn_StockOut_Receipts/receipts_" + date + "_" + timestamp + "_" + safeType + ".txt";
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
+
+            pw.println("=== " + type + " ===");
+            pw.println("Date: " + date);
+            pw.println("Time: " + time.format(DateTimeFormatter.ofPattern("hh:mm a")));
+            pw.println("From: " + from);
+            pw.println("To: " + to);
+            pw.println(role +": " + name);
+            pw.println("Models:");
+
+            int total = 0;
+            for (String[] m : movements) {
+                pw.println("- " + m[0] + " (Quantity: " + m[1] + ")");
+                total += Integer.parseInt(m[1]);
+            }
+
+            pw.println("Total Quantity: " + total);
+            pw.println("--------------------------------");
+
+            System.out.println("Receipt generated: " + fileName);
+
+        } catch (Exception e) {
+            System.out.println("Error writing receipt.");
+        }
+    }
+
+    //Select model by index
+    private String selectModel(Scanner sc) {
+
+        System.out.println("Select Model:");
+
+        // models list already loaded in FileManager
+        for (int i = 1; i < FileManager.models.size(); i++) {
+            System.out.println(i + ". " + FileManager.models.get(i)[0]);
+        }
+
+        System.out.print("Enter choice: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        return FileManager.models.get(choice)[0];
+    }
+
+    //Select outlet by index
+    private String selectOutlet(Scanner sc, String title) {
+
+        String[] outlets = {
+                "HQ",
+                "KLCC",
+                "MidValley",
+                "Lalaport",
+                "Nu_Sentral",
+                "PavilionKL",
+                "MyTown",
+                "KLEast"
+        };
+
+        System.out.println(title);
+        for (int i = 0; i < outlets.length; i++) {
+            System.out.println((i + 1) + ". " + outlets[i]);
+        }
+
+        System.out.print("Enter choice: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        return outlets[choice - 1];
+    }
+
+    //Get CSV column index
+    private int getOutletColumnIndex(String[] columns) {
+
+        for (int i = 0; i < columns.length; i++) {
+            if (columns[i].equalsIgnoreCase(outlet_id + "_Stock")) {
+                return i;
+            }
+        }
+
+        // fallback to safety
+        return 2;
     }
 
     private void displaySummary(
