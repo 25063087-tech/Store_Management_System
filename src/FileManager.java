@@ -163,4 +163,59 @@ public class FileManager {
 
         return fileName; // Return the path so EmailService knows what to attach
     }
+    //Update CSV Stock (From & To)
+    public static void updateStockMovement(
+            List<String[]> movements,
+            String from,
+            String to
+    ) {
+        if (models.isEmpty()) {
+            System.out.println("Model list is empty.");
+            return;
+        }
+
+        String[] headers = models.get(0);
+
+        int fromIndex = getOutletColumnIndexByName(headers, from);
+        int toIndex   = getOutletColumnIndexByName(headers, to);
+
+        if (fromIndex == -1 || toIndex == -1) {
+            System.out.println("Error: Invalid outlet column.");
+            return;
+        }
+
+        for (int i = 1; i < models.size(); i++) {
+            String[] row = models.get(i);
+
+            for (String[] m : movements) {
+                if (row[0].equalsIgnoreCase(m[0])) {
+
+                    int qty = Integer.parseInt(m[1]);
+
+                    int fromStock = Integer.parseInt(row[fromIndex]);
+                    int toStock   = Integer.parseInt(row[toIndex]);
+
+                    row[fromIndex] = String.valueOf(fromStock - qty);
+                    row[toIndex]   = String.valueOf(toStock + qty);
+                }
+            }
+        }
+
+        modelDataModified = true;
+
+
+        Data_Saver();
+    }
+    // Get outlet column index by outlet name
+    public static int getOutletColumnIndexByName(String[] columns, String outlet) {
+
+        String columnName = outlet + "_Stock";
+
+        for (int i = 0; i < columns.length; i++) {
+            if (columns[i].equalsIgnoreCase(columnName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
