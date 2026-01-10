@@ -542,7 +542,7 @@ public class Employee {
             movements.add(new String[]{model, String.valueOf(qty)});
         }
 
-        updateCSVStock(movements, from, to);
+        FileManager.updateStockMovement(movements, from, to);
 
         writeReceipt(isStockIn ? "Stock In" : "Stock Out", from, to, movements);
 
@@ -550,75 +550,7 @@ public class Employee {
     }
 
 
-    //Update CSV Stock (From & To)
-    private void updateCSVStock(List<String[]> movements, String from, String to) {
 
-        List<String> updatedLines = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader("Files/Model.csv"))) {
-
-            String header = br.readLine();
-            updatedLines.add(header);
-
-            String[] columns = header.split(",");
-
-            int fromIndex = getOutletColumnIndexByName(columns, from);
-            int toIndex   = getOutletColumnIndexByName(columns, to);
-
-            if (fromIndex == -1 || toIndex == -1) {
-                System.out.println("Error: Invalid outlet column.");
-                return;
-            }
-
-            String line;
-            while ((line = br.readLine()) != null) {
-
-                String[] data = line.split(",");
-
-                for (String[] m : movements) {
-                    if (data[0].equalsIgnoreCase(m[0])) {
-
-                        int qty = Integer.parseInt(m[1]);
-
-                        // subtract from FROM outlet
-                        int fromStock = Integer.parseInt(data[fromIndex]);
-                        data[fromIndex] = String.valueOf(fromStock - qty);
-
-                        // add to TO outlet
-                        int toStock = Integer.parseInt(data[toIndex]);
-                        data[toIndex] = String.valueOf(toStock + qty);
-                    }
-                }
-
-                updatedLines.add(String.join(",", data));
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error reading Files/Model.csv");
-            return;
-        }
-
-        try (PrintWriter pw = new PrintWriter(new FileWriter("Files/Model.csv"))) {
-            for (String l : updatedLines) {
-                pw.println(l);
-            }
-        } catch (Exception e) {
-            System.out.println("Error writing Files/Model.csv");
-        }
-    }
-
-    //Get CSV column index by outlet name
-    private int getOutletColumnIndexByName(String[] columns, String outlet) {
-
-        String columnName = outlet + "_Stock";
-
-        for (int i = 0; i < columns.length; i++) {
-            if (columns[i].equalsIgnoreCase(columnName)) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     //write stockin&out receipt (one receipt per transaction)
     private void writeReceipt(String type, String from, String to,
