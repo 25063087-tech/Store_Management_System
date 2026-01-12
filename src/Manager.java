@@ -2,9 +2,11 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.*;
 public class Manager extends Employee {
+    // Creates a manager user from loaded employee data
     public Manager(String[] a){
         super(a);
     }
+    // Main menu for manager actions
     public void show_menu() {
         while(true) {
             System.out.println("==== Employee Options ====");
@@ -70,6 +72,7 @@ public class Manager extends Employee {
         }
     }
 
+    // Registers a new staff member with explicit outlet assignment
     public void register_new_staff(){
         Scanner sc = new Scanner(System.in);
         System.out.println("=== Register New Employee ===");
@@ -81,13 +84,15 @@ public class Manager extends Employee {
         String new_password = sc.nextLine();
         System.out.print("Set Role: ");
         String new_job_type = sc.nextLine();
+        System.out.print("Enter Outlet ID: ");
+        String new_outlet_id = sc.nextLine();
         String new_role = "Employee";
-        String new_outlet_id = this.outlet_id;
         String[] new_employee = {new_name, new_password, new_id, new_role, new_job_type, new_outlet_id};
         System.out.println("Employee Registered Successfully!");
         FileManager.employee_list.add(new_employee);
     }
 
+    // Aggregates sales totals per employee and prints a ranking
     public void view_performance() {
         System.out.println("\n=== Employee Performance Metrics ===");
 
@@ -145,6 +150,7 @@ public class Manager extends Employee {
                     name, sales, count);
         }
     }
+    // Dispatches analytics routines based on user selection
     public void data_analytics() {
         Scanner sc = new Scanner(System.in);
 
@@ -184,6 +190,7 @@ public class Manager extends Employee {
         }
     }
 
+    // Summarizes sales by day across the history list
     public void daily_sales_summary() {
         System.out.println("=== Daily Sales Summary ===");
 
@@ -246,6 +253,7 @@ public class Manager extends Employee {
                 (double) totalTransactions / dates.size());
     }
 
+    // Groups sales by ISO week and can drill into a selected week
     public void weekly_sales_summary() {
         System.out.println("=== Weekly Sales Summary ===");
 
@@ -348,6 +356,7 @@ public class Manager extends Employee {
         }
     }
 
+    // Rolls up sales totals per calendar month
     public void monthly_sales_summary() {
         System.out.println("=== Monthly Sales Summary ===");
 
@@ -398,6 +407,7 @@ public class Manager extends Employee {
         }
     }
 
+    // Finds top selling models by quantity and revenue
     public void most_sold_product() {
         System.out.println("=== Most Sold Product Model ===");
 
@@ -463,6 +473,7 @@ public class Manager extends Employee {
         }
     }
 
+    // Calculates average daily revenue and basic variability stats
     public void average_daily_revenue() {
         System.out.println("=== Average Daily Revenue ===");
 

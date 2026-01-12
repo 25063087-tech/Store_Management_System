@@ -12,5 +12,4 @@ Id,name,date,clock_in,clock_out,Outlet_Id,total_hours
 1005,James,2026-01-03,9:16 AM,9:16 AM,KL_Gateway,0.0
 2001,Adib,2026-01-05,2:55 PM,2:55 PM,KL_Gateway,0.0
 2411,Yughen,2026-01-10,2:59 PM,3:00 PM,KLEast,0.0
-2411,Yughen,2026-01-12,9:12 AM,9:12 AM,KLEast,0.0
-2411,Yughen,2026-01-12,9:46 AM,9:46 AM,KLEast,0.0
+2001,Adib,2026-01-12,5:54 PM,5:55 PM,KLEast,0.0
