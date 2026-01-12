@@ -137,177 +137,7 @@ public class Employee {
             System.out.println("You have not clocked in yet");
         }
     }
-/*
-    public void sales_record() {
-        Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== Record New Sale ===");
-
-        LocalDate date = LocalDate.now();
-        DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mm a");
-        String time = LocalTime.now().format(tf);
-
-        System.out.print("Customer Name: ");
-        String customer = sc.nextLine();
-
-        String model = "";
-        double price = 0.0;
-        String[] foundModel = null;
-        int modelIndex = -1;
-
-        while (foundModel == null) {
-            System.out.print("Enter Model: ");
-            model = sc.nextLine().trim();
-
-            for (int i = 0; i < FileManager.models.size(); i++) {
-                String[] modelData = FileManager.models.get(i);
-                if (modelData.length > 0 && modelData[0].equalsIgnoreCase(model)) {
-                    foundModel = modelData;
-                    modelIndex = i;
-                    price = Double.parseDouble(modelData[1]); // 自动从库存获取价格
-                    System.out.println("Model found! Unit Price: RM " + price);
-                    break;
-                }
-            }
-
-            if (foundModel == null) {
-                System.out.println("Error: Model \"" + model + "\" not found in stock records.");
-                System.out.println("Please enter a valid model name or type 'cancel' to return to menu.");
-
-                String response = sc.nextLine();
-                if (response.equalsIgnoreCase("cancel")) {
-                    System.out.println("Sale recording cancelled.");
-                    return;
-                }
-            }
-        }
-
-        System.out.println("\n=== Stock Information for " + model + " ===");
-        System.out.println("Unit Price: RM " + price);
-        System.out.println("Stock by Outlet:");
-        System.out.println("1. KLCC: " + foundModel[2] + " units");
-        System.out.println("2. MidValley: " + foundModel[3] + " units");
-        System.out.println("3. Lalaport: " + foundModel[4] + " units");
-        System.out.println("4. Nu Sentral: " + foundModel[5] + " units");
-        System.out.println("5. Pavilion KL: " + foundModel[6] + " units");
-        System.out.println("6. MyTown: " + foundModel[7] + " units");
-        System.out.println("7. KL East: " + foundModel[8] + " units");
-
-        int outletChoice = 0;
-        int outletStockIndex = 0;
-        String selectedOutlet = "";
-
-        while (outletChoice < 1 || outletChoice > 7) {
-            System.out.print("\nSelect outlet (1-7): ");
-            try {
-                outletChoice = sc.nextInt();
-                sc.nextLine();
-
-                if (outletChoice < 1 || outletChoice > 7) {
-                    System.out.println("Invalid selection. Please enter a number between 1 and 7.");
-                } else {
-
-                    switch(outletChoice) {
-                        case 1:
-                            outletStockIndex = 2;
-                            selectedOutlet = "KLCC";
-                            break;
-                        case 2:
-                            outletStockIndex = 3;
-                            selectedOutlet = "MidValley";
-                            break;
-                        case 3:
-                            outletStockIndex = 4;
-                            selectedOutlet = "Lalaport";
-                            break;
-                        case 4:
-                            outletStockIndex = 5;
-                            selectedOutlet = "Nu Sentral";
-                            break;
-                        case 5:
-                            outletStockIndex = 6;
-                            selectedOutlet = "Pavilion KL";
-                            break;
-                        case 6:
-                            outletStockIndex = 7;
-                            selectedOutlet = "MyTown";
-                            break;
-                        case 7:
-                            outletStockIndex = 8;
-                            selectedOutlet = "KL East";
-                            break;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 7.");
-                sc.nextLine();
-            }
-        }
-
-        int currentStock = Integer.parseInt(foundModel[outletStockIndex]);
-        System.out.println("Current stock at " + selectedOutlet + ": " + currentStock + " units");
-
-        int qty = 0;
-        while (qty <= 0 || qty > currentStock) {
-            System.out.print("Enter Quantity: ");
-            try {
-                qty = sc.nextInt();
-                sc.nextLine();
-
-                if (qty <= 0) {
-                    System.out.println("Quantity must be greater than 0.");
-                } else if (qty > currentStock) {
-                    System.out.println("Error: Insufficient stock! Only " + currentStock + " units available at " + selectedOutlet);
-                    System.out.println("Please enter a smaller quantity or type '0' to cancel.");
-
-                    if (qty == 0) {
-                        System.out.println("Sale recording cancelled.");
-                        return;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                sc.nextLine();
-            }
-        }
-
-        int newStock = currentStock - qty;
-        foundModel[outletStockIndex] = String.valueOf(newStock);
-
-        FileManager.models.set(modelIndex, foundModel);
-
-        FileManager.modelDataModified = true;
-
-        System.out.print("Transaction Method (Cash/Card/E-wallet): ");
-        String method = sc.nextLine();
-
-        double total = qty * price;
-
-        String[] sale = new String[10];
-        sale[0] = date.toString();
-        sale[1] = time;
-        sale[2] = this.id;
-        sale[3] = this.name;
-        sale[4] = customer;
-        sale[5] = model;
-        sale[6] = String.valueOf(qty);
-        sale[7] = String.valueOf(price);
-        sale[8] = String.valueOf(total);
-        sale[9] = method;
-        FileManager.sales_history.add(sale);
-        FileManager.saveLatestSaleReceipt();
-        System.out.println("\n=== Sale Summary ===");
-        System.out.println("Customer: " + customer);
-        System.out.println("Model: " + model);
-        System.out.println("Quantity: " + qty);
-        System.out.println("Unit Price: RM " + price);
-        System.out.println("Total: RM " + total);
-        System.out.println("Payment Method: " + method);
-        System.out.println("Outlet: " + selectedOutlet);
-        System.out.println("Stock updated: " + currentStock + " -> " + newStock);
-        System.out.println("Sale recorded successfully.");
-    }
-        */
 
     public void sales_record() {
         Scanner sc = new Scanner(System.in);
@@ -318,70 +148,65 @@ public class Employee {
         DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mm a");
         String time = LocalTime.now().format(tf);
 
-        // --- CHANGE START: Added -101 check for Customer Name ---
-        System.out.print("Customer Name (-101 to cancel): ");
+        System.out.print("Customer Name (X to cancel): ");
         String customer = sc.nextLine().trim();
 
-        if (customer.equals("-101")) {
+        if (customer.equalsIgnoreCase("X")) {
             System.out.println("Sale recording cancelled.");
             return;
         }
-        // --- CHANGE END ---
 
-        String model = "";
+        String model;
         double price = 0.0;
         String[] foundModel = null;
         int modelIndex = -1;
 
         while (foundModel == null) {
-            // --- CHANGE START: Check for -101 immediately after input ---
-            System.out.print("Enter Model (-101 to cancel): ");
+            System.out.print("Enter Model (X to cancel): ");
             model = sc.nextLine().trim();
 
-            if (model.equals("-101")) {
+            if (model.equalsIgnoreCase("X")) {
                 System.out.println("Sale recording cancelled.");
                 return;
             }
-            // --- CHANGE END ---
 
             for (int i = 0; i < FileManager.models.size(); i++) {
                 String[] modelData = FileManager.models.get(i);
                 if (modelData.length > 0 && modelData[0].equalsIgnoreCase(model)) {
                     foundModel = modelData;
                     modelIndex = i;
-                    price = Double.parseDouble(modelData[1]); // 自动从库存获取价格
+                    price = Double.parseDouble(modelData[1]);
                     System.out.println("Model found! Unit Price: RM " + price);
                     break;
                 }
             }
 
             if (foundModel == null) {
-                System.out.println("Error: Model \"" + model + "\" not found in stock records.");
-                System.out.println("Please enter a valid model name.");
+                System.out.println("Error: Model \"" + model + "\" not found.");
             }
         }
 
-        System.out.println("\n=== Stock Information for " + model + " ===");
+
+        System.out.println("\n=== Stock Information for " + foundModel[0] + " ===");
         System.out.println("Unit Price: RM " + price);
-        System.out.println("Stock by Outlet:");
-        System.out.println("1. KLCC: " + foundModel[2] + " units");
-        System.out.println("2. MidValley: " + foundModel[3] + " units");
-        System.out.println("3. Lalaport: " + foundModel[4] + " units");
-        System.out.println("4. Nu Sentral: " + foundModel[5] + " units");
-        System.out.println("5. Pavilion KL: " + foundModel[6] + " units");
-        System.out.println("6. MyTown: " + foundModel[7] + " units");
-        System.out.println("7. KL East: " + foundModel[8] + " units");
+        System.out.println("1. KLCC: " + foundModel[3] + " units");
+        System.out.println("2. MidValley: " + foundModel[4] + " units");
+        System.out.println("3. Lalaport: " + foundModel[5] + " units");
+        System.out.println("4. Nu Sentral: " + foundModel[6] + " units");
+        System.out.println("5. Pavilion KL: " + foundModel[7] + " units");
+        System.out.println("6. MyTown: " + foundModel[8] + " units");
+        System.out.println("7. KL East: " + foundModel[9] + " units");
 
         int outletChoice = 0;
         int outletStockIndex = 0;
         String selectedOutlet = "";
 
-        // --- CHANGE START: Converted to String input to handle -101 easier ---
+
         while (outletChoice < 1 || outletChoice > 7) {
-            System.out.print("\nSelect outlet (1-7) or -101 to cancel: ");
+            System.out.print("Select outlet (1-7) or X to cancel: ");
             String input = sc.nextLine().trim();
 
-            if (input.equals("-101")) {
+            if (input.equalsIgnoreCase("X")) {
                 System.out.println("Sale recording cancelled.");
                 return;
             }
@@ -389,85 +214,63 @@ public class Employee {
             try {
                 outletChoice = Integer.parseInt(input);
 
-                if (outletChoice < 1 || outletChoice > 7) {
-                    System.out.println("Invalid selection. Please enter a number between 1 and 7.");
-                } else {
-                    switch(outletChoice) {
-                        case 1: outletStockIndex = 2; selectedOutlet = "KLCC"; break;
-                        case 2: outletStockIndex = 3; selectedOutlet = "MidValley"; break;
-                        case 3: outletStockIndex = 4; selectedOutlet = "Lalaport"; break;
-                        case 4: outletStockIndex = 5; selectedOutlet = "Nu Sentral"; break;
-                        case 5: outletStockIndex = 6; selectedOutlet = "Pavilion KL"; break;
-                        case 6: outletStockIndex = 7; selectedOutlet = "MyTown"; break;
-                        case 7: outletStockIndex = 8; selectedOutlet = "KL East"; break;
-                    }
+                switch (outletChoice) {
+                    case 1: outletStockIndex = 3; selectedOutlet = "KLCC"; break;
+                    case 2: outletStockIndex = 4; selectedOutlet = "MidValley"; break;
+                    case 3: outletStockIndex = 5; selectedOutlet = "Lalaport"; break;
+                    case 4: outletStockIndex = 6; selectedOutlet = "Nu Sentral"; break;
+                    case 5: outletStockIndex = 7; selectedOutlet = "Pavilion KL"; break;
+                    case 6: outletStockIndex = 8; selectedOutlet = "MyTown"; break;
+                    case 7: outletStockIndex = 9; selectedOutlet = "KL East"; break;
+                    default:
+                        System.out.println("Invalid outlet number.");
+                        outletChoice = 0;
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a number.");
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
             }
         }
-        // --- CHANGE END ---
 
         int currentStock = Integer.parseInt(foundModel[outletStockIndex]);
-        System.out.println("Current stock at " + selectedOutlet + ": " + currentStock + " units");
-        int qty = 0;
+        System.out.println("Current stock at " + selectedOutlet + ": " + currentStock);
 
-        // --- CHANGE START: Completely rewritten Quantity Loop ---
-        // We use 'true' to loop forever until we hit a 'break' or 'return'
+        int qty;
         while (true) {
-            System.out.print("Enter Quantity (-101 to cancel): ");
+            System.out.print("Enter Quantity (X to cancel): ");
             String qtyInput = sc.nextLine().trim();
 
-            // 1. Check for cancel code FIRST (Before parsing as int)
-            if (qtyInput.equals("-101")) {
+            if (qtyInput.equalsIgnoreCase("X")) {
                 System.out.println("Sale recording cancelled.");
                 return;
             }
 
             try {
-                // 2. Parse the number
                 qty = Integer.parseInt(qtyInput);
 
-                // 3. Check if number is positive
                 if (qty <= 0) {
                     System.out.println("Quantity must be greater than 0.");
-                    continue; // Restart loop
+                } else if (qty > currentStock) {
+                    System.out.println("Insufficient stock. Available: " + currentStock);
+                } else {
+                    break;
                 }
-
-                // 4. Check if stock is sufficient
-                else if (qty > currentStock) {
-                    System.out.println("Error: Insufficient stock! Only " + currentStock + " units available at " + selectedOutlet);
-                    continue; // Restart loop
-                }
-
-                // 5. If we pass all checks, break the loop
-                break;
-
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                System.out.println("Please enter a valid number.");
             }
         }
-        // --- CHANGE END ---
 
         int newStock = currentStock - qty;
         foundModel[outletStockIndex] = String.valueOf(newStock);
-
         FileManager.models.set(modelIndex, foundModel);
         FileManager.modelDataModified = true;
 
-        // --- CHANGE START: Added -101 check for Payment Method ---
-        System.out.print("Transaction Method (Cash/Card/E-wallet) (-101 to cancel): ");
+        System.out.print("Transaction Method (Cash/Card/E-wallet) (X to cancel): ");
         String method = sc.nextLine().trim();
 
-        if (method.equals("-101")) {
-            // Note: Even though stock was technically modified in memory above,
-            // if we return here without calling Data_Saver(), the file won't update.
-            // However, the 'models' list in memory IS updated.
-            // Ideally, we should revert stock if cancelled here, but simple return is okay for now.
+        if (method.equalsIgnoreCase("X")) {
             System.out.println("Sale recording cancelled.");
             return;
         }
-        // --- CHANGE END ---
 
         double total = qty * price;
 
@@ -477,28 +280,28 @@ public class Employee {
         sale[2] = this.id;
         sale[3] = this.name;
         sale[4] = customer;
-        sale[5] = model;
+        sale[5] = foundModel[0];
         sale[6] = String.valueOf(qty);
         sale[7] = String.valueOf(price);
         sale[8] = String.valueOf(total);
         sale[9] = method;
 
         FileManager.sales_history.add(sale);
-
-        // Assuming you have a method to save the main stock file too, usually FileManager.Data_Saver()
-        // Your original code only had saveLatestSaleReceipt(), ensure stock is saved to file too!
         FileManager.Data_Saver();
         FileManager.saveLatestSaleReceipt();
 
+        // =========================
+        // SUMMARY
+        // =========================
         System.out.println("\n=== Sale Summary ===");
         System.out.println("Customer: " + customer);
-        System.out.println("Model: " + model);
+        System.out.println("Model: " + foundModel[0]);
         System.out.println("Quantity: " + qty);
         System.out.println("Unit Price: RM " + price);
         System.out.println("Total: RM " + total);
         System.out.println("Payment Method: " + method);
         System.out.println("Outlet: " + selectedOutlet);
-        System.out.println("Stock updated: " + currentStock + " -> " + newStock);
+        System.out.println("Stock updated: " + currentStock + " → " + newStock);
         System.out.println("Sale recorded successfully.");
     }
 
@@ -509,20 +312,42 @@ public class Employee {
         System.out.println("1. Search Stock Information");
         System.out.println("2. Search Sales Information");
         System.out.print("Choose option (1 or 2): ");
-        int option = sc.nextInt();
-        sc.nextLine();
+
+        int option;
+        try {
+            option = sc.nextInt();
+            sc.nextLine();
+        } catch (Exception e) {
+            System.out.println("Invalid input.");
+            sc.nextLine();
+            return;
+        }
+
 
         if (option == 1) {
             System.out.print("Search Model Name: ");
-            String searchModel = sc.nextLine();
+            String searchModel = sc.nextLine().trim();
+
             System.out.println("Searching...");
 
             boolean found = false;
+
             for (String[] stock : FileManager.models) {
-                if (stock.length > 0 && stock[0].equalsIgnoreCase(searchModel)) {
+                if (stock.length >= 9 && stock[0].equalsIgnoreCase(searchModel)) {
+
+                    System.out.println("\n=== Stock Information ===");
                     System.out.println("Model: " + stock[0]);
-                    System.out.println("Unit Price: RM" + stock[1]);
-                    System.out.println("Stock Available: " + stock[2]);
+                    System.out.println("Unit Price: RM " + stock[1]);
+
+                    System.out.println("\nStock by Outlet:");
+                    System.out.println("KLCC: " + stock[3] + " units");
+                    System.out.println("MidValley: " + stock[4] + " units");
+                    System.out.println("Lalaport: " + stock[5] + " units");
+                    System.out.println("Nu Sentral: " + stock[6] + " units");
+                    System.out.println("Pavilion KL: " + stock[7] + " units");
+                    System.out.println("MyTown: " + stock[8] + " units");
+                    System.out.println("KL East: " + stock[9] + " units");
+
                     found = true;
                     break;
                 }
@@ -531,17 +356,19 @@ public class Employee {
             if (!found) {
                 System.out.println("Error: Model \"" + searchModel + "\" not found in stock records.");
             }
+        }
 
-        } else if (option == 2) {
+        else if (option == 2) {
             System.out.println("=== Search Sales Information ===");
             System.out.print("Search keyword (date, customer name, or model name): ");
-            String keyword = sc.nextLine();
+            String keyword = sc.nextLine().trim();
+
             System.out.println("Searching...");
 
             int recordsFound = 0;
 
             for (String[] sale : FileManager.sales_history) {
-                if (sale.length < 10 || sale[0].equals("Date")) {
+                if (sale.length < 10 || sale[0].equalsIgnoreCase("Date")) {
                     continue;
                 }
 
@@ -555,29 +382,29 @@ public class Employee {
                 String employeeName = sale[3].trim();
 
                 if (date.contains(keyword) ||
-                        customerName.contains(keyword) ||
-                        modelName.contains(keyword)) {
+                        customerName.toLowerCase().contains(keyword.toLowerCase()) ||
+                        modelName.toLowerCase().contains(keyword.toLowerCase())) {
 
-                    System.out.println("Sales Record Found:");
+                    System.out.println("\nSales Record Found:");
                     System.out.println("Date: " + date + " Time: " + time);
                     System.out.println("Customer: " + customerName);
-                    System.out.println("Item(s): " + modelName + " Quantity: " + quantity);
-                    System.out.println("Total: RM" + total);
+                    System.out.println("Item: " + modelName + " | Quantity: " + quantity);
+                    System.out.println("Total: RM " + total);
                     System.out.println("Transaction Method: " + transactionMethod);
                     System.out.println("Employee: " + employeeName);
                     System.out.println("Status: Transaction verified.");
-                    System.out.println();
+
                     recordsFound++;
                 }
             }
 
             if (recordsFound > 0) {
-                System.out.println("Total records found: " + recordsFound);
+                System.out.println("\nTotal records found: " + recordsFound);
             } else {
                 System.out.println("No sales record found for keyword: " + keyword);
             }
-
-        } else {
+        }
+        else {
             System.out.println("Invalid option!");
         }
     }
@@ -655,13 +482,13 @@ public class Employee {
         int stockColumn;
 
         switch (branchName) {
-            case "KLCC": stockColumn = 2; break;
-            case "MidValley": stockColumn = 3; break;
-            case "Lalaport": stockColumn = 4; break;
-            case "Nu Sentral": stockColumn = 5; break;
-            case "Pavilion KL": stockColumn = 6; break;
-            case "MyTown": stockColumn = 7; break;
-            case "KL East": stockColumn = 8; break;
+            case "KLCC": stockColumn = 3; break;
+            case "MidValley": stockColumn = 4; break;
+            case "Lalaport": stockColumn = 5; break;
+            case "Nu Sentral": stockColumn = 6; break;
+            case "Pavilion KL": stockColumn = 7; break;
+            case "MyTown": stockColumn = 8; break;
+            case "KL East": stockColumn = 9; break;
             default:
                 System.out.println("Invalid branch.");
                 return;
