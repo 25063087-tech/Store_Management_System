@@ -13,12 +13,12 @@ public class Manager extends Employee {
             System.out.println("0. Log-Out");
             System.out.println("1. Clock-In.");
             System.out.println("2. Clock-Out");
-            System.out.println("3. Sales Record");
-            System.out.println("4. Search Item");
+            System.out.println("3. Sales Record System");
+            System.out.println("4. Search Information");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
             System.out.println("7. Stock In / Stock Out");
-            System.out.println("8. Edit Stock Info");
+            System.out.println("8. Edit Information");
             System.out.println("9. Filter & Sort Sales History");
             System.out.println("=== Manager Options ===");
             System.out.println("10. Register New Staff");
