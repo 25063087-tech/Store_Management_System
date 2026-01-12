@@ -1,60 +1,57 @@
 import java.util.*;
 import java.io.*;
-
+import java.time.LocalDate;
 public class FileManager {
-    static ArrayList <String[]> employee_list = new ArrayList<>();
-    static ArrayList <String[]> models = new ArrayList<>();
-    static ArrayList <String[]> attendance = new ArrayList<>();
-    static ArrayList <String[]> sales_history = new ArrayList<>();
+    static ArrayList<String[]> employee_list = new ArrayList<>();
+    static ArrayList<String[]> models = new ArrayList<>();
+    static ArrayList<String[]> attendance = new ArrayList<>();
+    static ArrayList<String[]> sales_history = new ArrayList<>();
     static String attendance_path = "Files/Attendance.csv";
     static String Employee_path = "Files/Employee_List - Sheet1.csv";
     static String model_path = "Files/Model.csv";
     static String sale_history = "Files/sales_history.csv";
-
+    static String sales_receipt = "Files/Sales_Receipts";
     public static boolean modelDataModified = false;
 
-    public FileManager(){
-        try(BufferedReader br = new BufferedReader(new FileReader(Employee_path))){
+    public FileManager() {
+        try (BufferedReader br = new BufferedReader(new FileReader(Employee_path))) {
             String line = "";
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] value = line.split(",");
                 employee_list.add(value);
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("There is something wrong with employee list");
         }
-        try(BufferedReader br = new BufferedReader(new FileReader(model_path))){
+        try (BufferedReader br = new BufferedReader(new FileReader(model_path))) {
             String line = "";
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] value = line.split(",");
                 models.add(value);
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("There is something wrong sales list");
         }
-        try(BufferedReader br = new BufferedReader(new FileReader(attendance_path))){
+        try (BufferedReader br = new BufferedReader(new FileReader(attendance_path))) {
             String line = "";
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] value = line.split(",");
                 attendance.add(value);
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("There is something wrong attendance");
         }
-        try(BufferedReader br = new BufferedReader(new FileReader(sale_history))){
+        try (BufferedReader br = new BufferedReader(new FileReader(sale_history))) {
             String line = "";
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] value = line.split(",");
                 sales_history.add(value);
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("There is something wrong with sales history list");
         }
     }
+
     public static void Data_Saver() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(attendance_path))) {
             for (String[] row : attendance) {
@@ -99,7 +96,7 @@ public class FileManager {
     // Method to create the daily report text file
     public static String createDailyReportFile(String date) {
         // 1. Define the specific folder path
-        String folderPath = "Files/Sales_Receipts";
+        String folderPath = "Files/Daily_Report";
 
         // 2. Ensure the directory exists (Create it if it's missing)
         File directory = new File(folderPath);
@@ -163,6 +160,7 @@ public class FileManager {
 
         return fileName; // Return the path so EmailService knows what to attach
     }
+
     //Update CSV Stock (From & To)
     public static void updateStockMovement(
             List<String[]> movements,
@@ -177,7 +175,7 @@ public class FileManager {
         String[] headers = models.get(0);
 
         int fromIndex = getOutletColumnIndexByName(headers, from);
-        int toIndex   = getOutletColumnIndexByName(headers, to);
+        int toIndex = getOutletColumnIndexByName(headers, to);
 
         if (fromIndex == -1 || toIndex == -1) {
             System.out.println("Error: Invalid outlet column.");
@@ -193,10 +191,10 @@ public class FileManager {
                     int qty = Integer.parseInt(m[1]);
 
                     int fromStock = Integer.parseInt(row[fromIndex]);
-                    int toStock   = Integer.parseInt(row[toIndex]);
+                    int toStock = Integer.parseInt(row[toIndex]);
 
                     row[fromIndex] = String.valueOf(fromStock - qty);
-                    row[toIndex]   = String.valueOf(toStock + qty);
+                    row[toIndex] = String.valueOf(toStock + qty);
                 }
             }
         }
@@ -206,6 +204,7 @@ public class FileManager {
 
         Data_Saver();
     }
+
     // Get outlet column index by outlet name
     public static int getOutletColumnIndexByName(String[] columns, String outlet) {
 
@@ -217,5 +216,69 @@ public class FileManager {
             }
         }
         return -1;
+    }
+    public static void saveLatestSaleReceipt() {
+        // 1. Safety Check
+        if (sales_history == null || sales_history.size() <= 1) {
+            return;
+        }
+
+        // 2. Get the LAST sale
+        String[] lastSale = sales_history.get(sales_history.size() - 1);
+
+        // 3. Extract Data
+        String date      = lastSale[0];
+        String time      = lastSale[1];
+        // Index 2 is ID, we want Name at Index 3
+        String empName   = lastSale[3];
+        String custName  = lastSale[4];
+        String items     = lastSale[5];
+        String qty       = lastSale[6];
+        // Index 7 is Unit Price, we want Total at Index 8
+        String total     = lastSale[8];
+        String payMethod = lastSale[9];
+
+        // --- Create Directory if missing ---
+        File directory = new File(sales_receipt);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        // 4. SMART COUNTER LOGIC
+        String safeDate = date.replace("/", "-"); // e.g., "2025-01-12"
+        int counter = 1;
+        String fileName;
+
+        // Loop until we find a filename that doesn't exist yet
+        do {
+            // Format: Files/Sales_Receipts/sales_2025-01-12_1.txt
+            fileName = sales_receipt + "/sales_" + safeDate + "_" + counter + ".txt";
+            counter++;
+        } while (new File(fileName).exists());
+
+        // 5. Build Receipt Content
+        StringBuilder sb = new StringBuilder();
+        sb.append("=========================================\n");
+        sb.append("             OFFICIAL RECEIPT            \n");
+        sb.append("Receipt No: ").append(counter - 1).append("\n"); // Show the number
+        sb.append("=========================================\n");
+        sb.append("Date:      ").append(date).append(" ").append(time).append("\n");
+        sb.append("Served By: ").append(empName).append("\n");
+        sb.append("Customer:  ").append(custName).append("\n");
+        sb.append("-----------------------------------------\n");
+        sb.append("Item:      ").append(items).append("\n");
+        sb.append("Qty:       ").append(qty).append("\n");
+        sb.append("Payment:   ").append(payMethod).append("\n");
+        sb.append("-----------------------------------------\n");
+        sb.append("TOTAL:     RM ").append(total).append("\n");
+        sb.append("=========================================\n");
+
+        // 6. Write to the new file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(sb.toString());
+            // System.out.println("Receipt saved: " + fileName);
+        } catch (IOException e) {
+            System.out.println("Error creating receipt: " + e.getMessage());
+        }
     }
 }

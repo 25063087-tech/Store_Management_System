@@ -12,7 +12,6 @@ Date,Time,Employee_ID,Employee_Name,Customer_Name,Model_Name,Quantity,Unit_Price
 2026-01-05,10:52 p.m.,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
 2026-01-05,10:52 p.m.,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
 2026-01-08,12:32 p.m.,2001,Adib,Ditto,DW2300-1,3,500.0,1500.0,Cash
-Date,Time,Employee_ID,Employee_Name,Customer_Name,Model_Name,Quantity,Unit_Price,Total_Price,Transaction_Method
 2025-10-13,02:50 p.m.,C6001,ditto,Zikri bin Abdullah,SW2500-1,1,845,845,Credit card
 2025-10-13,03:15 p.m.,C6001,Tan Guan Han,Siti Aminah,DW2300-4,2,349,698,E-wallet
 2025-10-14,11:00 a.m.,C6013,Siti Ros binti Rossi,John Doe,DW2400-2,1,550,550,Cash
@@ -24,5 +23,6 @@ Date,Time,Employee_ID,Employee_Name,Customer_Name,Model_Name,Quantity,Unit_Price
 2026-01-05,09:08 p.m.,2001,Adib,tracy,huawei,2,300.0,600.0,Cash
 2026-01-05,10:19 p.m.,2001,Adib,tracy,DW2300-1,2,333.0,666.0,Cash
 2026-01-05,10:52 p.m.,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
-2026-01-05,10:52 p.m.,2001,Adib,t,DW2300-1,2,299.0,598.0,Cash
-2026-01-08,12:32 p.m.,2001,Adib,Ditto,DW2300-1,3,500.0,1500.0,Cash
+2026-01-12,06:30 PM,2001,Adib,aslaa,DW2300-3,1,420.0,420.0,Cash
+2026-01-12,06:36 PM,2001,Adib,asalla,DW2300-1,1,500.0,500.0,1
+2026-01-12,06:42 PM,2001,Adib,asia,DW2300-1,1,500.0,500.0,Cash

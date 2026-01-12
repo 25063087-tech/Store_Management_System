@@ -292,6 +292,7 @@ public class Employee {
         sale[8] = String.valueOf(total);
         sale[9] = method;
         FileManager.sales_history.add(sale);
+        FileManager.saveLatestSaleReceipt();
         System.out.println("\n=== Sale Summary ===");
         System.out.println("Customer: " + customer);
         System.out.println("Model: " + model);
