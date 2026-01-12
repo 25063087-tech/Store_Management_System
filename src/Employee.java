@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.time.*;
+
 public class Employee {
+
     String[] attendance = new String[7];
     String name = "";
     String id = "";
@@ -20,6 +22,7 @@ public class Employee {
     Duration duration;
     Boolean clock_in = false;
     String branch = "";
+
     public Employee(String[] a) {
         this.name = a[0];
         this.password = a[1];
@@ -123,7 +126,7 @@ public class Employee {
             System.out.println("Name: " + name);
             System.out.println("Outlet: " + outlet_id);
             System.out.println("");
-            System.out.println("Clock in successful!");
+            System.out.println("Clock out successful!");
             System.out.println("Date: " + attendance[2]);
             System.out.println("Time: " + formattedTime);
             System.out.println("Total Hours Worked: " + formattedHours);
@@ -549,8 +552,6 @@ public class Employee {
 
         System.out.println("Stock movement recorded successfully.");
     }
-
-
 
 
     //write stockin&out receipt (one receipt per transaction)
