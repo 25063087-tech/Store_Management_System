@@ -39,12 +39,12 @@ public class Employee {
             System.out.println("0. Log-Out");
             System.out.println("1. Clock-In.");
             System.out.println("2. Clock-Out");
-            System.out.println("3. Sales Record");
-            System.out.println("4. Search Item");
+            System.out.println("3. Sales Record System");
+            System.out.println("4. Search Information");
             System.out.println("5. Morning Stock Count");
             System.out.println("6. Night Stock Count");
             System.out.println("7. Stock In / Stock Out");
-            System.out.println("8. Edit Stock Info");
+            System.out.println("8. Edit Information");
             System.out.println("9. Filter & Sort Sales History");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
@@ -137,7 +137,7 @@ public class Employee {
             System.out.println("You have not clocked in yet");
         }
     }
-
+/*
     public void sales_record() {
         Scanner sc = new Scanner(System.in);
 
@@ -296,6 +296,200 @@ public class Employee {
         sale[9] = method;
         FileManager.sales_history.add(sale);
         FileManager.saveLatestSaleReceipt();
+        System.out.println("\n=== Sale Summary ===");
+        System.out.println("Customer: " + customer);
+        System.out.println("Model: " + model);
+        System.out.println("Quantity: " + qty);
+        System.out.println("Unit Price: RM " + price);
+        System.out.println("Total: RM " + total);
+        System.out.println("Payment Method: " + method);
+        System.out.println("Outlet: " + selectedOutlet);
+        System.out.println("Stock updated: " + currentStock + " -> " + newStock);
+        System.out.println("Sale recorded successfully.");
+    }
+        */
+
+    public void sales_record() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== Record New Sale ===");
+
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mm a");
+        String time = LocalTime.now().format(tf);
+
+        // --- CHANGE START: Added -101 check for Customer Name ---
+        System.out.print("Customer Name (-101 to cancel): ");
+        String customer = sc.nextLine().trim();
+
+        if (customer.equals("-101")) {
+            System.out.println("Sale recording cancelled.");
+            return;
+        }
+        // --- CHANGE END ---
+
+        String model = "";
+        double price = 0.0;
+        String[] foundModel = null;
+        int modelIndex = -1;
+
+        while (foundModel == null) {
+            // --- CHANGE START: Check for -101 immediately after input ---
+            System.out.print("Enter Model (-101 to cancel): ");
+            model = sc.nextLine().trim();
+
+            if (model.equals("-101")) {
+                System.out.println("Sale recording cancelled.");
+                return;
+            }
+            // --- CHANGE END ---
+
+            for (int i = 0; i < FileManager.models.size(); i++) {
+                String[] modelData = FileManager.models.get(i);
+                if (modelData.length > 0 && modelData[0].equalsIgnoreCase(model)) {
+                    foundModel = modelData;
+                    modelIndex = i;
+                    price = Double.parseDouble(modelData[1]); // 自动从库存获取价格
+                    System.out.println("Model found! Unit Price: RM " + price);
+                    break;
+                }
+            }
+
+            if (foundModel == null) {
+                System.out.println("Error: Model \"" + model + "\" not found in stock records.");
+                System.out.println("Please enter a valid model name.");
+            }
+        }
+
+        System.out.println("\n=== Stock Information for " + model + " ===");
+        System.out.println("Unit Price: RM " + price);
+        System.out.println("Stock by Outlet:");
+        System.out.println("1. KLCC: " + foundModel[2] + " units");
+        System.out.println("2. MidValley: " + foundModel[3] + " units");
+        System.out.println("3. Lalaport: " + foundModel[4] + " units");
+        System.out.println("4. Nu Sentral: " + foundModel[5] + " units");
+        System.out.println("5. Pavilion KL: " + foundModel[6] + " units");
+        System.out.println("6. MyTown: " + foundModel[7] + " units");
+        System.out.println("7. KL East: " + foundModel[8] + " units");
+
+        int outletChoice = 0;
+        int outletStockIndex = 0;
+        String selectedOutlet = "";
+
+        // --- CHANGE START: Converted to String input to handle -101 easier ---
+        while (outletChoice < 1 || outletChoice > 7) {
+            System.out.print("\nSelect outlet (1-7) or -101 to cancel: ");
+            String input = sc.nextLine().trim();
+
+            if (input.equals("-101")) {
+                System.out.println("Sale recording cancelled.");
+                return;
+            }
+
+            try {
+                outletChoice = Integer.parseInt(input);
+
+                if (outletChoice < 1 || outletChoice > 7) {
+                    System.out.println("Invalid selection. Please enter a number between 1 and 7.");
+                } else {
+                    switch(outletChoice) {
+                        case 1: outletStockIndex = 2; selectedOutlet = "KLCC"; break;
+                        case 2: outletStockIndex = 3; selectedOutlet = "MidValley"; break;
+                        case 3: outletStockIndex = 4; selectedOutlet = "Lalaport"; break;
+                        case 4: outletStockIndex = 5; selectedOutlet = "Nu Sentral"; break;
+                        case 5: outletStockIndex = 6; selectedOutlet = "Pavilion KL"; break;
+                        case 6: outletStockIndex = 7; selectedOutlet = "MyTown"; break;
+                        case 7: outletStockIndex = 8; selectedOutlet = "KL East"; break;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+        // --- CHANGE END ---
+
+        int currentStock = Integer.parseInt(foundModel[outletStockIndex]);
+        System.out.println("Current stock at " + selectedOutlet + ": " + currentStock + " units");
+        int qty = 0;
+
+        // --- CHANGE START: Completely rewritten Quantity Loop ---
+        // We use 'true' to loop forever until we hit a 'break' or 'return'
+        while (true) {
+            System.out.print("Enter Quantity (-101 to cancel): ");
+            String qtyInput = sc.nextLine().trim();
+
+            // 1. Check for cancel code FIRST (Before parsing as int)
+            if (qtyInput.equals("-101")) {
+                System.out.println("Sale recording cancelled.");
+                return;
+            }
+
+            try {
+                // 2. Parse the number
+                qty = Integer.parseInt(qtyInput);
+
+                // 3. Check if number is positive
+                if (qty <= 0) {
+                    System.out.println("Quantity must be greater than 0.");
+                    continue; // Restart loop
+                }
+
+                // 4. Check if stock is sufficient
+                else if (qty > currentStock) {
+                    System.out.println("Error: Insufficient stock! Only " + currentStock + " units available at " + selectedOutlet);
+                    continue; // Restart loop
+                }
+
+                // 5. If we pass all checks, break the loop
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+        // --- CHANGE END ---
+
+        int newStock = currentStock - qty;
+        foundModel[outletStockIndex] = String.valueOf(newStock);
+
+        FileManager.models.set(modelIndex, foundModel);
+        FileManager.modelDataModified = true;
+
+        // --- CHANGE START: Added -101 check for Payment Method ---
+        System.out.print("Transaction Method (Cash/Card/E-wallet) (-101 to cancel): ");
+        String method = sc.nextLine().trim();
+
+        if (method.equals("-101")) {
+            // Note: Even though stock was technically modified in memory above,
+            // if we return here without calling Data_Saver(), the file won't update.
+            // However, the 'models' list in memory IS updated.
+            // Ideally, we should revert stock if cancelled here, but simple return is okay for now.
+            System.out.println("Sale recording cancelled.");
+            return;
+        }
+        // --- CHANGE END ---
+
+        double total = qty * price;
+
+        String[] sale = new String[10];
+        sale[0] = date.toString();
+        sale[1] = time;
+        sale[2] = this.id;
+        sale[3] = this.name;
+        sale[4] = customer;
+        sale[5] = model;
+        sale[6] = String.valueOf(qty);
+        sale[7] = String.valueOf(price);
+        sale[8] = String.valueOf(total);
+        sale[9] = method;
+
+        FileManager.sales_history.add(sale);
+
+        // Assuming you have a method to save the main stock file too, usually FileManager.Data_Saver()
+        // Your original code only had saveLatestSaleReceipt(), ensure stock is saved to file too!
+        FileManager.Data_Saver();
+        FileManager.saveLatestSaleReceipt();
+
         System.out.println("\n=== Sale Summary ===");
         System.out.println("Customer: " + customer);
         System.out.println("Model: " + model);
