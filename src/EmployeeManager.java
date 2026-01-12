@@ -1,5 +1,6 @@
 import java.util.*;
 public class EmployeeManager{
+
     Employee current_user;
     Scanner sc = new Scanner(System.in);
     public EmployeeManager(){
