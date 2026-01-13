@@ -110,7 +110,7 @@ public class Employee {
 
     public void clock_out() {
         if(clock_in) {
-            System.out.println("=== Attendance Clock Out ===");
+
             end = Instant.now();
             duration = Duration.between(start, end);
             long dur = duration.getSeconds();
