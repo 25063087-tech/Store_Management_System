@@ -29,3 +29,5 @@ Date,Time,Employee_ID,Employee_Name,Customer_Name,Model_Name,Quantity,Unit_Price
 2026-01-12,07:36 PM,2411,Yughen,babu,DW2300-1,1,500.0,500.0,E-Wallet
 2026-01-12,07:38 PM,2411,Yughen,gana,DW2300-1,1,500.0,500.0,Card
 2026-01-12,08:32 PM,6001,Tan Guan Han,hana,DW2300-1,1,500.0,500.0,Card
+2026-01-13,11:35 AM,2411,Yughen,Ben,SW2500-1,1,500.0,500.0,E-Wallet
+2026-01-13,12:01 PM,2411,Yughen,Sara,DW2400-2,1,500.0,500.0,Cash
