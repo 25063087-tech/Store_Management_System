@@ -217,68 +217,104 @@ public class FileManager {
         }
         return -1;
     }
+
     public static void saveLatestSaleReceipt() {
-        // 1. Safety Check
-        if (sales_history == null || sales_history.size() <= 1) {
+
+        if (sales_history == null || sales_history.size() <= 1) return;
+
+        int index = sales_history.size() - 1;
+        String[] sale = sales_history.get(index);
+
+        String date      = sale[0];
+        String time      = sale[1];
+        String empName   = sale[3];
+        String custName  = sale[4];
+        String item      = sale[5];
+        String qty       = sale[6];
+        String total     = sale[8];
+        String method    = sale[9];
+
+        // ---------------------------
+        // CREATE FILENAME (DATE+TIME)
+        // ---------------------------
+        String safeDate = date.replace("/", "-");
+        String safeTime = time.replace(":", "").replace(" ", "");
+        String receiptName = "sales_" + safeDate + "_" + safeTime + ".txt";
+
+
+        if (sale.length < 11) {
+            sale = Arrays.copyOf(sale, 11);
+            sales_history.set(index, sale);
+        }
+        sale[10] = receiptName;
+
+        File dir = new File(sales_receipt);
+        if (!dir.exists()) dir.mkdirs();
+
+        String path = sales_receipt + "/" + receiptName;
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, false))) {
+
+            bw.write("=========================================\n");
+            bw.write("             OFFICIAL RECEIPT            \n");
+            bw.write("=========================================\n");
+            bw.write("Date:      " + date + " " + time + "\n");
+            bw.write("Served By: " + empName + "\n");
+            bw.write("Customer:  " + custName + "\n");
+            bw.write("-----------------------------------------\n");
+            bw.write("Item:      " + item + "\n");
+            bw.write("Qty:       " + qty + "\n");
+            bw.write("Payment:   " + method + "\n");
+            bw.write("-----------------------------------------\n");
+            bw.write("TOTAL:     RM " + total + "\n");
+            bw.write("=========================================\n");
+
+        } catch (IOException e) {
+            System.out.println("Error saving receipt.");
+        }
+    }
+
+    public static void updateReceiptForSale(int index) {
+
+        String[] sale = sales_history.get(index);
+
+        if (sale.length < 11 || sale[10] == null || sale[10].isEmpty()) {
+            System.out.println("No receipt linked to this sale.");
             return;
         }
 
-        // 2. Get the LAST sale
-        String[] lastSale = sales_history.get(sales_history.size() - 1);
+        String path = sales_receipt + "/" + sale[10];
 
-        // 3. Extract Data
-        String date      = lastSale[0];
-        String time      = lastSale[1];
-        // Index 2 is ID, we want Name at Index 3
-        String empName   = lastSale[3];
-        String custName  = lastSale[4];
-        String items     = lastSale[5];
-        String qty       = lastSale[6];
-        // Index 7 is Unit Price, we want Total at Index 8
-        String total     = lastSale[8];
-        String payMethod = lastSale[9];
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, false))) {
 
-        // --- Create Directory if missing ---
-        File directory = new File(sales_receipt);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
+            bw.write("=========================================\n");
+            bw.write("             OFFICIAL RECEIPT            \n");
+            bw.write("=========================================\n");
+            bw.write("Date:      " + sale[0] + " " + sale[1] + "\n");
+            bw.write("Served By: " + sale[3] + "\n");
+            bw.write("Customer:  " + sale[4] + "\n");
+            bw.write("-----------------------------------------\n");
+            bw.write("Item:      " + sale[5] + "\n");
+            bw.write("Qty:       " + sale[6] + "\n");
+            bw.write("Payment:   " + sale[9] + "\n");
+            bw.write("-----------------------------------------\n");
+            bw.write("TOTAL:     RM " + sale[8] + "\n");
+            bw.write("=========================================\n");
 
-        // 4. SMART COUNTER LOGIC
-        String safeDate = date.replace("/", "-"); // e.g., "2025-01-12"
-        int counter = 1;
-        String fileName;
+            System.out.println("Receipt updated: " + sale[10]);
 
-        // Loop until we find a filename that doesn't exist yet
-        do {
-            // Format: Files/Sales_Receipts/sales_2025-01-12_1.txt
-            fileName = sales_receipt + "/sales_" + safeDate + "_" + counter + ".txt";
-            counter++;
-        } while (new File(fileName).exists());
-
-        // 5. Build Receipt Content
-        StringBuilder sb = new StringBuilder();
-        sb.append("=========================================\n");
-        sb.append("             OFFICIAL RECEIPT            \n");
-        sb.append("Receipt No: ").append(counter - 1).append("\n"); // Show the number
-        sb.append("=========================================\n");
-        sb.append("Date:      ").append(date).append(" ").append(time).append("\n");
-        sb.append("Served By: ").append(empName).append("\n");
-        sb.append("Customer:  ").append(custName).append("\n");
-        sb.append("-----------------------------------------\n");
-        sb.append("Item:      ").append(items).append("\n");
-        sb.append("Qty:       ").append(qty).append("\n");
-        sb.append("Payment:   ").append(payMethod).append("\n");
-        sb.append("-----------------------------------------\n");
-        sb.append("TOTAL:     RM ").append(total).append("\n");
-        sb.append("=========================================\n");
-
-        // 6. Write to the new file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write(sb.toString());
-            // System.out.println("Receipt saved: " + fileName);
         } catch (IOException e) {
-            System.out.println("Error creating receipt: " + e.getMessage());
+            System.out.println("Failed to update receipt.");
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
