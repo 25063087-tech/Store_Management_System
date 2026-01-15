@@ -485,10 +485,10 @@ public class Employee {
             case "KLCC": stockColumn = 3; break;
             case "MidValley": stockColumn = 4; break;
             case "Lalaport": stockColumn = 5; break;
-            case "Nu Sentral": stockColumn = 6; break;
-            case "Pavilion KL": stockColumn = 7; break;
+            case "Nu_Sentral": stockColumn = 6; break;
+            case "PavilionKL": stockColumn = 7; break;
             case "MyTown": stockColumn = 8; break;
-            case "KL East": stockColumn = 9; break;
+            case "KLEast": stockColumn = 9; break;
             default:
                 System.out.println("Invalid branch.");
                 return;
