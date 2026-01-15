@@ -49,7 +49,7 @@ public class EditInformation {
         String[] header = FileManager.models.get(0);
         String[] row = FileManager.models.get(foundIdx);
 
-        
+
         int outletCol = -1;
         if (user != null && user.outlet_id != null && header != null) {
             for (int i = 0; i < header.length; i++) {
@@ -81,7 +81,7 @@ public class EditInformation {
             String value = (row.length > i) ? row[i] : "";
             System.out.println(i + ". " + colName + " : " + value);
         }
-        System.out.print("Enter column index to edit (or -1 to cancel): ");
+        System.out.print("Enter outlet number to edit (or -1 to cancel): ");
         int col;
         try {
             col = Integer.parseInt(sc.nextLine());
@@ -196,8 +196,13 @@ public class EditInformation {
         row = ensureRowLength(row, targetCol + 1);
         row[targetCol] = newVal;
         FileManager.sales_history.set(foundIdx, row);
+
+        FileManager.updateReceiptForSale(foundIdx);
+
         FileManager.Data_Saver();
-        System.out.println("Sales information updated successfully.");
+
+        System.out.println("Sales information and receipt updated successfully.");
+
     }
 
     private static int findColumnIndex(String[] header, String[] candidates) {
