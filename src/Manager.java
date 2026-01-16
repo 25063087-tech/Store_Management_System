@@ -82,11 +82,12 @@ public class Manager extends Employee {
         String new_id = sc.nextLine();
         System.out.print("Set Password: ");
         String new_password = sc.nextLine();
-        System.out.print("Set Role: ");
+        System.out.print("Set Job-Type: ");
         String new_job_type = sc.nextLine();
+        System.out.print("Set Role: ");
+        String new_role = sc.nextLine();
         System.out.print("Enter Outlet ID: ");
         String new_outlet_id = sc.nextLine();
-        String new_role = "Employee";
         String[] new_employee = {new_name, new_password, new_id, new_role, new_job_type, new_outlet_id};
         System.out.println("Employee Registered Successfully!");
         FileManager.employee_list.add(new_employee);
