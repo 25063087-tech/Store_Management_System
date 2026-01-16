@@ -122,13 +122,13 @@ public class FilterandSortSalesHistory {
         sc.nextLine();
     }
 
-    // Safely retrieves data from a row
+    //Safely retrieves data from a row
     private static String get(String[] row, int idx) {
         if (row == null || idx < 0) return "";
         return (row.length > idx && row[idx] != null) ? row[idx] : "";
     }
 
-    // Dynamically finds column index based on header name
+    //Dynamically finds column index based on header name
     private static int findColumnIndex(String[] header, String[] candidates) {
         if (header == null) return -1;
         for (int i = 0; i < header.length; i++) {
@@ -141,7 +141,7 @@ public class FilterandSortSalesHistory {
         return -1;
     }
 
-    // Safely parses numeric values
+    //Safely parses numeric values
     private static double parseDoubleSafe(String s) {
         if (s == null) return 0.0;
         try { return Double.parseDouble(s); } catch (Exception e) {
