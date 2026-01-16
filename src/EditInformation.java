@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.util.Locale;
 
 public class EditInformation {
+
+    // Displays edit options menu for stock and sales records
     public static void showMenu(Employee user) {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -22,6 +24,8 @@ public class EditInformation {
         }
     }
 
+    // Edits stock information for a selected model
+    // Automatically detects outlet-specific stock column
     public static void editStockInfo(Employee user) {
         Scanner sc = new Scanner(System.in);
         if (FileManager.models.size() <= 1) {
@@ -102,6 +106,7 @@ public class EditInformation {
         System.out.println("Stock information updated successfully.");
     }
 
+    // Edits existing sales records and updates corresponding receipt
     public static void editSalesInfo() {
         Scanner sc = new Scanner(System.in);
         if (FileManager.sales_history.size() <= 1) {
