@@ -3,6 +3,7 @@ public class EmployeeManager{
 
     Employee current_user;
     Scanner sc = new Scanner(System.in);
+
     public EmployeeManager(){
         while(true) {
             System.out.println("=== Employee Login ===");
@@ -14,6 +15,8 @@ public class EmployeeManager{
         }
     }
 
+    // Validates employee ID and password against stored records
+    // Creates Employee or Manager object based on role
     public void login_checker(String id, String password){
         if (FileManager.employee_list == null || FileManager.employee_list.size() <= 1) {
             System.out.println("Login Failed: No employee records found.");
