@@ -6,7 +6,7 @@ import java.io.File;
 
 public class EmailService {
 
-    // GMAIL REAL SENDING CONFIGURATION
+    //Gmail real sending configuration
     private static final String SMTP_USERNAME = "adibrahman708@gmail.com";
 
     private static final String SMTP_PASSWORD = "taqb ixyo zekh rhxt";
@@ -14,7 +14,7 @@ public class EmailService {
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
 
-    // Sends daily sales report email with attachment using Gmail SMTP
+    //Sends daily sales report email with attachment using Gmail SMTP
     public static void sendDailyReport(String recipientEmail, String filePath, String date) {
         System.out.println(">> Connecting to Gmail SMTP Server...");
 
@@ -25,7 +25,7 @@ public class EmailService {
         properties.put("mail.smtp.host", SMTP_HOST);
         properties.put("mail.smtp.port", SMTP_PORT);
 
-        // 2. Create Session with Authentication
+        //Create Session with Authentication
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
