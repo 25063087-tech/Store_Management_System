@@ -13,6 +13,7 @@ public class FileManager {
     static String sales_receipt = "Files/Sales_Receipts";
     public static boolean modelDataModified = false;
 
+    // Loads employee, model, attendance, and sales data at system startup
     public FileManager() {
         try (BufferedReader br = new BufferedReader(new FileReader(Employee_path))) {
             String line = "";
@@ -52,6 +53,8 @@ public class FileManager {
         }
     }
 
+    // Saves all in-memory data back to CSV files
+    // Prevents data loss during logout or system updates
     public static void Data_Saver() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(attendance_path))) {
             for (String[] row : attendance) {
@@ -90,28 +93,26 @@ public class FileManager {
             System.out.println("Error: Sales file did not save. " + e.getMessage());
         }
     }
-    // Add these imports to the top of FileManager.java
-// ... inside the FileManager class ...
 
     // Method to create the daily report text file
     public static String createDailyReportFile(String date) {
-        // 1. Define the specific folder path
+        //Define the specific folder path
         String folderPath = "Files/Daily_Report";
 
-        // 2. Ensure the directory exists (Create it if it's missing)
+        //Ensure the directory exists (Create it if it's missing)
         File directory = new File(folderPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        // 3. Combine folder path and filename
+        //Combine folder path and filename
         String fileName = folderPath + "/Daily_Report_" + date + ".txt";
 
         double totalSales = 0.0;
         boolean hasSales = false;
 
         try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
-            // 4. Write the Header
+            //Write the Header
             pw.println("=========================================");
             pw.println("      GOLDENHOUR HEADQUARTERS REPORT     ");
             pw.println("=========================================");
@@ -121,8 +122,9 @@ public class FileManager {
             pw.printf("%-10s %-20s %-15s %-5s %-10s%n", "TIME", "ITEM", "CUSTOMER", "QTY", "TOTAL");
             pw.println("-------------------------------------------------------");
 
-            // 5. Loop through the sales_history list
+            //Loop through the sales_history list
             for (String[] sale : sales_history) {
+
                 // Check if row is valid and matches the requested date
                 if (sale.length > 8 && sale[0].equals(date)) {
                     pw.printf("%-10s %-20s %-15s %-5s %-10s%n",
@@ -218,6 +220,7 @@ public class FileManager {
         return -1;
     }
 
+
     public static void saveLatestSaleReceipt() {
 
         if (sales_history == null || sales_history.size() <= 1) return;
@@ -234,9 +237,7 @@ public class FileManager {
         String total     = sale[8];
         String method    = sale[9];
 
-        // ---------------------------
         // CREATE FILENAME (DATE+TIME)
-        // ---------------------------
         String safeDate = date.replace("/", "-");
         String safeTime = time.replace(":", "").replace(" ", "");
         String receiptName = "sales_" + safeDate + "_" + safeTime + ".txt";
@@ -274,6 +275,7 @@ public class FileManager {
         }
     }
 
+    // Updates receipt when a sales record is edited
     public static void updateReceiptForSale(int index) {
 
         String[] sale = sales_history.get(index);
