@@ -99,7 +99,7 @@ public class FileManager {
         //Define the specific folder path
         String folderPath = "Files/Daily_Report";
 
-        //Ensure the directory exists (Create it if it's missing)
+        //Ensure the directory exists
         File directory = new File(folderPath);
         if (!directory.exists()) {
             directory.mkdirs();
@@ -125,7 +125,7 @@ public class FileManager {
             //Loop through the sales_history list
             for (String[] sale : sales_history) {
 
-                // Check if row is valid and matches the requested date
+                //Check if row is valid and matches the requested date
                 if (sale.length > 8 && sale[0].equals(date)) {
                     pw.printf("%-10s %-20s %-15s %-5s %-10s%n",
                             sale[1],   // Time
@@ -147,7 +147,7 @@ public class FileManager {
                 pw.println("       NO SALES RECORDED TODAY       ");
             }
 
-            // 6. Write the Footer/Totals
+            //Write the Footer/Totals
             pw.println("-------------------------------------------------------");
             pw.printf("TOTAL SALES ACCUMULATED: RM %.2f%n", totalSales);
             pw.println("=========================================");
