@@ -299,9 +299,7 @@ public class Employee {
         FileManager.Data_Saver();
         FileManager.saveLatestSaleReceipt();
 
-        // =========================
-        // SUMMARY
-        // =========================
+        //Summary
         System.out.println("\n=== Sale Summary ===");
         System.out.println("Customer: " + customer);
         System.out.println("Model: " + foundModel[0]);
