@@ -33,6 +33,8 @@ public class Employee {
         this.branch = a[5];
     }
 
+    // Displays employee menu and routes user actions
+    // Runs continuously until the user logs out
     public void show_menu() {
         while (true) {
             System.out.println("==== Employee Options ====");
@@ -48,7 +50,9 @@ public class Employee {
             System.out.println("9. Filter & Sort Sales History");
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
-            sc.nextLine(); // consume newline
+            sc.nextLine();
+
+            // Handle employee menu selection
             switch (option) {
                 case 0:
                     System.out.println("Logging Out.....");
@@ -86,6 +90,8 @@ public class Employee {
 
     }
 
+    // Records employee clock-in time and date
+    // Stores attendance information temporarily
     public void clock_in() {
         start = Instant.now();
         LocalDate date = LocalDate.now();
@@ -108,6 +114,8 @@ public class Employee {
         clock_in = true;
     }
 
+    // Records employee clock-out time
+    // Calculates total working hours and saves attendance record
     public void clock_out() {
         if(clock_in) {
 
@@ -138,7 +146,8 @@ public class Employee {
         }
     }
 
-
+    // Handles sales transaction recording
+    // Validates model, checks stock availability, updates inventory, and generates receipt
     public void sales_record() {
         Scanner sc = new Scanner(System.in);
 
@@ -305,6 +314,7 @@ public class Employee {
         System.out.println("Sale recorded successfully.");
     }
 
+    // Allows employee to search stock or sales information
     public void search_item() {
         Scanner sc = new Scanner(System.in);
 
@@ -409,6 +419,7 @@ public class Employee {
         }
     }
 
+    // Performs morning stock count at store opening
     public void morning_stock_count() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -425,6 +436,8 @@ public class Employee {
         runStockCount("Morning");
     }
 
+    // Performs night stock count before store closing
+    // Triggers daily report generation and auto email to headquarters
     public void night_stock_count() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -452,6 +465,8 @@ public class Employee {
 
     }
 
+    // Compares physical stock count with system records
+    // Detects mismatches and displays summary
     private void runStockCount(String shift) {
 
 
@@ -575,7 +590,7 @@ public class Employee {
     }
 
 
-    //write stockin&out receipt (one receipt per transaction)
+    //Generate stock in&out receipt (one receipt per transaction)
     private void writeReceipt(String type, String from, String to,
                               List<String[]> movements) {
 
