@@ -480,7 +480,6 @@ public class Employee {
 
 
 
-
         Scanner sc = new Scanner(System.in);
 
         if (this.branch == null) {
