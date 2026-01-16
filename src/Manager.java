@@ -2,10 +2,12 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.*;
 public class Manager extends Employee {
+
     // Creates a manager user from loaded employee data
     public Manager(String[] a){
         super(a);
     }
+
     // Main menu for manager actions
     public void show_menu() {
         while(true) {
@@ -151,6 +153,7 @@ public class Manager extends Employee {
                     name, sales, count);
         }
     }
+
     // Dispatches analytics routines based on user selection
     public void data_analytics() {
         Scanner sc = new Scanner(System.in);
@@ -198,7 +201,7 @@ public class Manager extends Employee {
         Map<String, Double> dailySales = new HashMap<>();
         Map<String, Integer> dailyCount = new HashMap<>();
 
-        // 检查是否有销售数据
+
         if (FileManager.sales_history.isEmpty()) {
             System.out.println("No sales data available.");
             return;
