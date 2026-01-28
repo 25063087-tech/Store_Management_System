@@ -9,7 +9,7 @@ public class EmailService {
     //Gmail real sending configuration
     private static final String SMTP_USERNAME = "adibrahman708@gmail.com";
 
-    private static final String SMTP_PASSWORD = "taqb ixyo zekh rhxt";
+    private static final String SMTP_PASSWORD = "asdf";
 
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
